@@ -46,6 +46,7 @@ export function Menu() {
                 name={lvl.name}
                 unlocked={lvl.unlocked}
                 handleClick={() => setSelectedLvl(lvl)}
+                className={lvl === selectedLvl ? s.selectedLvl : ""}
               />
             )
           })

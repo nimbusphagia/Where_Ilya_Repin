@@ -1,4 +1,4 @@
-import type { User } from "./entities"
+import type { User } from "../../../types/entities"
 
 export type Level = {
   id: string,

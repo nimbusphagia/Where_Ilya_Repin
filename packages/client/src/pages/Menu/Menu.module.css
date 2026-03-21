@@ -42,6 +42,10 @@
   color: white;
 }
 
+.selectedLvl {
+  background-color: rgb(0, 0, 0, 0.5);
+}
+
 .subMenu {
   bottom: 50px;
   right: 50px;

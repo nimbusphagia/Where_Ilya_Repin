@@ -21,10 +21,16 @@
   object-fit: cover;
   height: 90%;
   margin: auto;
+  cursor: crosshair;
 }
 
 .header {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.solutions {
+  display: flex;
+  gap: 15px;
 }

@@ -1,3 +1,29 @@
+@font-face {
+  font-family: "Bauhaus";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./assets/fonts/bauhaus-webfont/BauhausRegular.woff") format('woff');
+}
+
+@font-face {
+  font-family: 'Bauhaus';
+  font-style: italic;
+  font-weight: 400;
+  src: url("./assets/fonts/bauhaus-webfont/BauhausItalic.woff") format('woff');
+}
+
+@font-face {
+  font-family: 'Bauhaus';
+  font-style: italic;
+  font-weight: 700;
+  src: url("./assets/fonts/bauhaus-webfont/BauhausBoldItalic.woff") format('woff');
+}
+
+@font-face {
+  font-family: "Bauhaus Extra";
+  src: url("./assets/fonts/bauhaus-font/BauhausAbstractRegular-nR8LP.woff2");
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,7 +34,8 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Helvetica";
+  font-family: "Bauhaus";
+  font-weight: 700;
 }
 
 button,
@@ -17,4 +44,11 @@ a {
   font: inherit;
   background-color: inherit;
   cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
 }

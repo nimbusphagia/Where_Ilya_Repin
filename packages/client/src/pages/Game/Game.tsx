@@ -4,16 +4,13 @@ import type { GameLoaderProps } from './Game.loader';
 import type { Coordinate } from '../../types/entities';
 import { useEffect, useRef, useState } from 'react';
 import { Timer } from './components/Timer';
+import { SubjectThumbnail } from './components/SubjectThumbnail';
 import { formatTime } from '../../utils/formatting';
 
 export function Game() {
   const { game } = useLoaderData<GameLoaderProps>();
   const [time, setTime] = useState<number>(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
-    return () => stop();
-  }, []);
-
 
   function startTimer() {
     intervalRef.current = setInterval(() => {
@@ -26,7 +23,7 @@ export function Game() {
   function handleImgClick(e: React.MouseEvent<HTMLImageElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
     console.log({ x, y });
   }
   function isMatch(
@@ -50,6 +47,21 @@ export function Game() {
         <Timer
           time={formatTime(time)}
         />
+        <div
+          className={s.solutions}
+        >
+          {game.solutions?.map((solution) =>
+            <SubjectThumbnail
+              key={solution.x + "-" + solution.y}
+              src={game.source}
+              coord={solution}
+              thumbH={80}
+              thumbW={80}
+              zoom={0.5}
+            />
+
+          )}
+        </div>
       </header>
       <div
         className={s.game}

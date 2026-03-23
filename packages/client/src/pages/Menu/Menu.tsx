@@ -42,8 +42,10 @@ export function Menu() {
           levels.map((lvl) => {
             return (
               <LevelItem
+                key={lvl.id}
                 id={lvl.id}
                 name={lvl.name}
+                thumbnail={lvl.thumbnail}
                 unlocked={lvl.unlocked}
                 handleClick={() => setSelectedLvl(lvl)}
                 className={lvl === selectedLvl ? s.selectedLvl : ""}
@@ -55,11 +57,6 @@ export function Menu() {
       <SubMenu
         actions={menuActions}
         className={s.subMenu}
-      />
-      <img
-        className={s.bgImg}
-        src="/images/bg1.jpg"
-        alt=""
       />
     </main>
   )

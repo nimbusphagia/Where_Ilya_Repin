@@ -10,16 +10,16 @@ const mockGame: GameLevel = {
   source: "https://res.cloudinary.com/dlsa973vu/image/upload/v1774107551/WhatsApp_Image_2026-03-20_at_8.45.06_PM_tp6f1z.jpg",
   solutions: [
     {
-      x: 5,
-      y: 10,
+      x: 17.9,
+      y: 12.5,
     },
     {
-      x: 25,
-      y: 50,
+      x: 40.8,
+      y: 30.8,
     },
     {
-      x: 45,
-      y: 10,
+      x: 68.4,
+      y: 80.7,
     },
   ],
 };

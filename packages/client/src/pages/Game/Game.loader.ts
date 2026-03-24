@@ -7,7 +7,7 @@ export type GameLoaderProps = {
 const mockGame: GameLevel = {
   id: "1",
   name: "First Level",
-  source: "https://res.cloudinary.com/dlsa973vu/image/upload/v1774107551/WhatsApp_Image_2026-03-20_at_8.45.06_PM_tp6f1z.jpg",
+  source: "https://res.cloudinary.com/dlsa973vu/image/upload/v1774311850/wassily_kandinsky-yellow_red_blue-1925-obelisk-art-history_yhtxqa.jpg",
   solutions: [
     {
       x: 17.9,

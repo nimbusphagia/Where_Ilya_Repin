@@ -24,6 +24,16 @@
   src: url("./assets/fonts/bauhaus-font/BauhausAbstractRegular-nR8LP.woff2");
 }
 
+@font-face {
+  font-family: "Bauhaus Plus";
+  src: url("./assets/fonts/bauhaus-font/BauhausRegular-lgndy.woff2");
+}
+
+@font-face {
+  font-family: "Bauhaus Sketch";
+  src: url("./assets/fonts/bauhaus-sketch-font/BauhausSketch-K1j7.woff2");
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -42,9 +52,11 @@ button,
 a {
   color: inherit;
   font: inherit;
-  background-color: inherit;
+  background-color: transparent;
   cursor: pointer;
+  border: none;
 }
+
 
 h1,
 h2,

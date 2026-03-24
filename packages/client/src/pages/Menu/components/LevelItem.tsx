@@ -8,16 +8,34 @@ type LevelItemProps = Level & {
 }
 export function LevelItem({ name, thumbnail, unlocked, handleClick, className }: LevelItemProps) {
   return (
-    <button
-      type="button"
-      className={`${s.lvl} ${className} ${unlocked ? s.unlocked : s.locked}`}
-      onClick={() => handleClick()}
-    >
-      <img
-        className={s.lvlThumbnail}
-        src={thumbnail}
-        alt="" />
-      {name}
-    </button>
+    <>
+      {unlocked ?
+        <button
+          type="button"
+          className={`${s.lvl} ${className} ${s.unlocked}`}
+          onClick={() => handleClick()}
+        >
+          <img
+            className={s.lvlThumbnail}
+            src={thumbnail}
+            alt="" />
+          {name}
+        </button>
+        :
+        <div
+          className={`${s.lvl} ${className} ${s.locked}`}
+        >
+          <img
+            className={s.lvlThumbnail}
+            src={thumbnail}
+            alt="" />
+          <div
+            className={s.lock}
+          >
+            {name}
+          </div>
+        </div>
+      }
+    </>
   )
 }

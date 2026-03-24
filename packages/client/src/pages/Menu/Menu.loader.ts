@@ -10,7 +10,7 @@ const mockLvls = [
   {
     id: "2",
     name: "Second Level",
-    unlocked: false,
+    unlocked: true,
     thumbnail: "/images/lvl2.png",
   },
   {
@@ -22,7 +22,7 @@ const mockLvls = [
   {
     id: "4",
     name: "Fourth Level",
-    unlocked: true,
+    unlocked: false,
     thumbnail: "/images/lvl4.png",
   },
   {

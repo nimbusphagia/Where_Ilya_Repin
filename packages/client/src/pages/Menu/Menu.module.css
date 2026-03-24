@@ -4,19 +4,16 @@
   position: relative;
   text-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 20px;
 }
 
-
-
 .title {
-  position: absolute;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 90px;
   width: 100%;
+  padding: 30px;
+  padding-bottom: 0;
 }
 
 .levels {
@@ -28,43 +25,63 @@
   grid-template-rows: repeat(2, auto);
   gap: 50px 80px;
   padding: 0 200px;
-  padding-top: 120px;
   align-items: center;
   position: relative;
+}
+
+.levels>* {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 0;
+  max-height: 280px;
 }
 
 .lvl {
   position: relative;
   width: 100%;
+  height: 100%;
   aspect-ratio: 1.1 / 1;
-  min-height: 0;
-  max-height: 300px;
   outline: none;
   border: none;
   border-radius: 10px;
   overflow: hidden;
   font-size: 30px;
   color: white;
+  transition: transform ease-in 0.2s, background-color ease-in 0.2s;
 }
 
+.lvl,
+.lock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .lvlThumbnail {
   position: absolute;
   top: 0;
-  left: 0;
   width: 100%;
+  height: 100%;
   object-position: center;
-  object-fit: contain;
+  object-fit: cover;
   z-index: -10;
 }
 
-.lvl:hover {
-  background-color: rgb(0, 0, 0, 0.1);
-  color: white;
+.unlocked:hover,
+.selectedLvl {
+  transform: scale(1.01);
 }
 
-.selectedLvl {
-  background-color: rgb(0, 0, 0, 0.3);
+
+.lock {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
 }
 
 .subMenu {

@@ -21,7 +21,7 @@
   object-fit: cover;
   height: 90%;
   margin: auto;
-  cursor: crosshair;
+  cursor: url("/src/assets/icons/square-cursor.png") 32 32, pointer;
 }
 
 .header {
@@ -31,6 +31,16 @@
 }
 
 .solutions {
+  display: flex;
+  gap: 15px;
+}
+
+.thumbnailPicker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  background-color: rgb(0, 0, 0, 0.5);
+  padding: 10px 15px;
+  border-radius: 5px;
   display: flex;
   gap: 15px;
 }

@@ -3,168 +3,105 @@ import s from './Game.module.css'
 import gs from "../../main.module.css"
 import type { GameLoaderProps } from './Game.loader';
 import type { Coordinate } from '../../types/entities';
-import { useEffect, useRef, useState } from 'react';
-import { Timer } from './components/Timer';
-import { SubjectThumbnail } from './components/SubjectThumbnail';
-import { formatTime } from '../../utils/formatting';
+import { useRef, useState } from 'react';
+import { Thumbnails } from './components/Thumbnails';
+import { GameHeader } from './components/GameHeader';
+import { PreGameMenu } from './components/PreGameMenu';
+import { PostGameMenu } from './components/PostGameMenu';
+import { RankList } from '../../components/RankList';
+import { useGameTimer } from './hooks/useGameTimer';
 
 type GameState = "pre-game" | "playing" | "post-game";
 
 export function Game() {
-  const { game } = useLoaderData<GameLoaderProps>();
-  const [time, setTime] = useState<number>(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { game, nextId } = useLoaderData<GameLoaderProps>();
   const [gameState, setGameState] = useState<GameState>("pre-game");
   const [picking, setPicking] = useState<boolean>(false);
   const [pickerPos, setPickerPos] = useState<Coordinate>({ x: 0, y: 0 });
+  const gameRef = useRef<HTMLDivElement>(null);
   const isPlaying = gameState === "playing";
+  const timer = useGameTimer();
+  const overlay: Record<Exclude<GameState, "playing">, React.ReactNode> = {
+    "pre-game": (
+      <PreGameMenu
+        title={game.name}
+        handleStart={start}>
+        <Thumbnails game={game} />
+      </PreGameMenu>
+    ),
+    "post-game": (
+      <PostGameMenu
+        title="You won!"
+        handleRetry={() => console.log("retry")}
+        nextLevel={nextId}>
+        <RankList />
+      </PostGameMenu>
+    ),
+  };
 
   function start() {
     setGameState("playing");
-    startTimer();
-  }
-  function startTimer() {
-    intervalRef.current = setInterval(() => {
-      setTime(prev => prev + 1);
-    }, 10);
-  };
-  function stopTimer() {
-    if (intervalRef.current) clearInterval(intervalRef.current);
+    timer.start();
   }
   function handleImgClick(e: React.MouseEvent<HTMLImageElement>) {
-    const gameRect = e.currentTarget.parentElement!.getBoundingClientRect();
-    const x = ((e.clientX - gameRect.left) / gameRect.width) * 100;
-    const y = ((e.clientY - gameRect.top) / gameRect.height) * 100;
-    setPickerPos({ x, y });
-    setPicking(!picking);
+    if (gameRef.current) {
+      const gameRect = gameRef.current.getBoundingClientRect();
+      const x = ((e.clientX - gameRect.left) / gameRect.width) * 100;
+      const y = ((e.clientY - gameRect.top) / gameRect.height) * 100;
+      setPickerPos({ x, y });
+      setPicking(!picking);
+    }
   }
-  function isMatch(
-    click: Coordinate,
-    solution: Coordinate,
-    tolerance = 5) {
-    return Math.abs(click.x - solution.x) <= tolerance &&
-      Math.abs(click.y - solution.y) <= tolerance;
-  };
 
   return (
-    <main
-      className={s.main}
+    <div
+      className={s.body}
     >
-      <header
-        className={s.header}
+      <main
+        className={s.main}
       >
-        <h1>
-          {game.name}
-        </h1>
-        <Timer
-          time={formatTime(time)}
-        />
-        <div
-          className={s.solutions}
+        <GameHeader
+          title={game.name}
+          time={timer.time}
         >
-          {game.solutions?.map((solution) =>
-            <SubjectThumbnail
-              key={solution.x + "-" + solution.y}
-              src={game.source}
-              coord={solution}
-              thumbH={64}
-              thumbW={64}
-              zoom={0.8}
-            />
+          <Thumbnails
+            game={game}
+          />
+        </GameHeader>
+        <div
+          className={s.game}
+          ref={gameRef}
+        >
+          <img
+            className={`${s.gameImg} ${!isPlaying ? gs.blurred : ""}`}
+            src={game.source}
+            alt=""
+            onClick={isPlaying ? handleImgClick : undefined}
+          />
 
-          )}
-        </div>
-      </header>
-      <div
-        className={s.game}
-      >
-        {gameState === "playing" &&
-          <>
-            <img
-              className={`${s.gameImg} ${!isPlaying ? gs.blurred : ""}`}
-              src={game.source}
-              alt=""
-              onClick={handleImgClick}
-            />
-            {
-              picking &&
-              <div
-                className={s.thumbnailPicker}
-                style={{
-                  top: `${pickerPos.y}%`,
-                  left: `${pickerPos.x}%`,
-                }}
-              >
-                {game.solutions?.map((solution) =>
-                  <SubjectThumbnail
-                    key={solution.x + "-" + solution.y}
-                    src={game.source}
-                    coord={solution}
-                    thumbH={64}
-                    thumbW={64}
-                    zoom={0.8}
-                  />
+          {picking &&
+            <div
+              className={s.thumbnailPicker}
+              style={{
+                top: `${pickerPos.y}%`,
+                left: `${pickerPos.x}%`,
+              }}
+            >
+              <Thumbnails
+                game={game}
+              />
 
-                )}
-              </div>
-            }
-          </>
-        }
-        {gameState === "pre-game" &&
-          <>
+            </div>
+          }
+          {!isPlaying &&
             <div
               className={gs.veil}
             >
+              {overlay[gameState]}
             </div>
-            <div
-              className={gs.subMenu}
-            >
-              <header>
-                <h1>{game.name}</h1>
-              </header>
-              <div
-                className={s.solutions}
-              >
-                {game.solutions?.map((solution) =>
-                  <SubjectThumbnail
-                    key={solution.x + "-" + solution.y}
-                    src={game.source}
-                    coord={solution}
-                    thumbH={64}
-                    thumbW={64}
-                    zoom={0.8}
-                  />
-
-                )}
-              </div>
-
-              <button
-                className={s.startBtn}
-                type='button'
-                onClick={start}
-              >
-                START
-              </button>
-
-            </div>
-          </>
-        }
-        {gameState === "post-game" &&
-          <>
-            <div
-              className={s.veil}
-            >
-            </div>
-            <img
-              className={s.gameImg}
-              src="/images/bg1.jpg"
-              alt=""
-              onClick={handleImgClick}
-            />
-          </>
-
-        }
-      </div>
-    </main>
+          }
+        </div>
+      </main >
+    </div >
   )
 }

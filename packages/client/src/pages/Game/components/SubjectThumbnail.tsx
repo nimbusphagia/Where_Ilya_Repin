@@ -1,3 +1,4 @@
+import s from "../Game.module.css"
 import { useEffect, useState } from "react"
 import type { Coordinate } from "../../../types/entities"
 import { extractThumbnail } from "../../../utils/thumbnail";
@@ -25,6 +26,7 @@ export function SubjectThumbnail({
   return (
     <img
       src={dataUrl ? dataUrl : undefined}
+      className={s.thumbImg}
       width={thumbW}
       height={thumbH}
       alt="" />

@@ -2,6 +2,7 @@ import type { GameLevel } from "../../types/entities";
 
 export type GameLoaderProps = {
   game: GameLevel,
+  nextId: string
 }
 
 const mockGame: GameLevel = {
@@ -27,5 +28,5 @@ const mockGame: GameLevel = {
 
 export async function GameLoader(): Promise<GameLoaderProps> {
   const game = mockGame;
-  return { game };
+  return { game, nextId: "2" };
 };

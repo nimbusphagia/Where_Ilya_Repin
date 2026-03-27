@@ -9,6 +9,8 @@ type Props = {
   thumbW?: number,
   thumbH: number,
   zoom?: number,
+  handleClick?: (solution: Coordinate) => void,
+  className?: string,
 }
 
 export function SubjectThumbnail({
@@ -16,7 +18,9 @@ export function SubjectThumbnail({
   coord,
   thumbW = 80,
   thumbH = 80,
-  zoom = 3
+  zoom = 3,
+  handleClick,
+  className
 }: Props) {
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   useEffect(() => {
@@ -26,9 +30,11 @@ export function SubjectThumbnail({
   return (
     <img
       src={dataUrl ? dataUrl : undefined}
-      className={s.thumbImg}
+      className={`${s.thumbImg} ${className}`}
       width={thumbW}
       height={thumbH}
-      alt="" />
+      alt=""
+      onClick={handleClick ? () => handleClick(coord) : undefined}
+    />
   )
 }

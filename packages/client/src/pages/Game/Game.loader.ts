@@ -11,14 +11,17 @@ const mockGame: GameLevel = {
   source: "https://res.cloudinary.com/dlsa973vu/image/upload/v1774311850/wassily_kandinsky-yellow_red_blue-1925-obelisk-art-history_yhtxqa.jpg",
   solutions: [
     {
+      id: "1a",
       x: 17.9,
       y: 12.5,
     },
     {
+      id: "1b",
       x: 40.8,
       y: 30.8,
     },
     {
+      id: "1c",
       x: 68.4,
       y: 80.7,
     },

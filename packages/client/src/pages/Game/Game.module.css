@@ -22,7 +22,9 @@
   object-fit: cover;
   height: 90%;
   margin: auto;
-  cursor: url("/src/assets/icons/square-cursor.png") 32 32, pointer;
+  cursor:
+    /*url("/src/assets/icons/square-cursor.png") 32 32,*/
+    crosshair;
 }
 
 .header {
@@ -73,6 +75,11 @@
   border: 3px dashed transparent;
 }
 
-.thumbImg:hover {
+.thumbnailPicker .thumbImg:hover {
   border: 3px dashed black;
+  cursor: pointer;
+}
+
+.solved {
+  border: 2px solid red;
 }

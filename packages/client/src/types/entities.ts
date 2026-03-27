@@ -4,6 +4,7 @@ export type User = {
   email?: string,
 }
 export type Coordinate = {
+  id?: string,
   x: number,
   y: number
 };
@@ -15,4 +16,6 @@ export type GameLevel = {
   solutions: readonly [Coordinate, Coordinate, Coordinate],
 }
 
-
+export type Solution = Coordinate & {
+  solved: boolean,
+}

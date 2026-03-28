@@ -1,8 +1,43 @@
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "./generated"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model Player {
+  id       String  @id @default(uuid())
+  username String
+  email    String? @unique
+  password String?
+  games    Game[]
+}
+
+model Level {
+  id        String       @id @default(uuid())
+  title     String
+  imageUrl  String
+  solutions Coordinate[]
+  games     Game[]
+}
+
+model Coordinate {
+  id      String  @id @default(uuid())
+  x       Decimal @db.Decimal(4, 2)
+  y       Decimal @db.Decimal(4, 2)
+  level   Level   @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  levelId String
+}
+
+model Game {
+  id        String    @id @default(uuid())
+  player    Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerId  String
+  level     Level     @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  levelId   String
+  startedAt DateTime  @default(now())
+  solvedAt  DateTime?
+  timeMs    Int?
 }

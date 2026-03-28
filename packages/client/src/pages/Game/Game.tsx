@@ -22,14 +22,13 @@ export function Game() {
   const { game, nextId } = useLoaderData<GameLoaderProps>();
   const [gameState, setGameState] = useState<GameState>("pre-game");
   const [picking, setPicking] = useState<boolean>(false);
-  const [pickerPos, setPickerPos] = useState<Coordinate>({ x: 0, y: 0 });
   const [targetCoord, setTargetCoord] = useState<Coordinate | null>(null);
   const [solutions, setSolutions] = useState<Solution[]>(
     () => game.solutions.map((coord) => ({ ...coord, solved: false }))
   );
-  const gameRef = useRef<HTMLDivElement>(null);
   const isPlaying = gameState === "playing";
   const timer = useGameTimer();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const overlay: Record<Exclude<GameState, "playing">, React.ReactNode> = {
     "pre-game": (
       <PreGameMenu
@@ -57,21 +56,19 @@ export function Game() {
     timer.start();
   }
   function handleImgClick(e: React.MouseEvent<HTMLImageElement>) {
-    if (targetCoord) return;
-    if (gameRef.current) {
-      const gameRect = gameRef.current.getBoundingClientRect();
-      const x = ((e.clientX - gameRect.left) / gameRect.width) * 100;
-      const y = ((e.clientY - gameRect.top) / gameRect.height) * 100;
-      setTargetCoord({ x, y });
-      setPickerPos({ x, y });
-      setPicking(!picking);
-      console.log("current click:", { x, y });
-    }
+    if (picking) return;
+
+    const wrapperRect = wrapperRef.current!.getBoundingClientRect();
+    const x = ((e.clientX - wrapperRect.left) / wrapperRect.width) * 100;
+    const y = ((e.clientY - wrapperRect.top) / wrapperRect.height) * 100;
+    console.log("Clicked: ", { x, y });
+    setTargetCoord({ x, y });
+    setPicking(true);
   }
   function handlePickerClick(solution: Coordinate) {
     if (!targetCoord) return;
+    console.log("Is Picking:", targetCoord, solution)
     if (!isMatch(targetCoord, { x: solution.x, y: solution.y })) {
-      console.log("Is Picking:", targetCoord, solution)
       setTargetCoord(null);
       setPicking(false);
       return;
@@ -110,27 +107,32 @@ export function Game() {
           </GameHeader>
           <div
             className={s.game}
-            ref={gameRef}
           >
-            <img
-              className={`${s.gameImg} ${!isPlaying ? gs.blurred : ""}`}
-              src={game.source}
-              alt=""
-              onClick={isPlaying ? handleImgClick : undefined}
-            />
+            <div
+              className={s.imgWrapper}
+              ref={wrapperRef}
+            >
+              <img
+                className={`${s.gameImg} ${!isPlaying ? gs.blurred : ""}`}
+                src={game.source}
+                alt=""
+                onClick={isPlaying ? handleImgClick : undefined}
+              />
 
-            {picking &&
-              <ThumbPicker
-                position={pickerPos}
-              >
-                <Thumbnails
-                  imgSrc={game.source}
-                  solutions={solutions}
-                  handleClick={handlePickerClick}
-                />
+              {picking &&
+                <ThumbPicker
+                  position={targetCoord!}
+                >
+                  <Thumbnails
+                    imgSrc={game.source}
+                    solutions={solutions}
+                    handleClick={handlePickerClick}
+                  />
 
-              </ThumbPicker>
-            }
+                </ThumbPicker>
+              }
+            </div>
+
             {!isPlaying &&
               <div
                 className={gs.veil}

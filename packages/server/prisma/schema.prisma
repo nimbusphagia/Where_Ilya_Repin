@@ -9,7 +9,7 @@ datasource db {
 
 model Player {
   id       String  @id @default(uuid())
-  username String
+  username String  @unique
   email    String? @unique
   password String?
   games    Game[]
@@ -33,8 +33,8 @@ model Coordinate {
 
 model Game {
   id        String    @id @default(uuid())
-  player    Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  playerId  String
+  player    Player?   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerId  String?
   level     Level     @relation(fields: [levelId], references: [id], onDelete: Cascade)
   levelId   String
   startedAt DateTime  @default(now())

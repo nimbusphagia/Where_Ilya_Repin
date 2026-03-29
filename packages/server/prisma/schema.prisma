@@ -8,10 +8,8 @@ datasource db {
 }
 
 model Player {
-  id       String  @id @default(uuid())
-  username String  @unique
-  email    String? @unique
-  password String?
+  id       String @id @default(uuid())
+  username String @unique
   games    Game[]
 }
 

@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { relative } from "path";
-import { createPlayer } from "../controllers/player.controller";
+import { create } from "../controllers/player.controller";
 
 const router = Router();
 
-router.post("/", createPlayer);
+router.post("/", create);
 
 export default router;

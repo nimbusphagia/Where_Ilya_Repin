@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { IdParamsSchema } from "./controller.schema";
 
 export const CoordinateSchema = z.object({
   x: z.number(),

@@ -1,6 +1,6 @@
-import type { Coordinate, Level, Player } from "../../prisma/generated/client";
+import type { Level } from "../../prisma/generated/client";
 import { prisma } from "../../lib/prisma";
-import { LevelDTO } from "../types/service.type";
+import { CreateLevelInput, EditLevelInput } from "../schemas/level.schema";
 
 export async function listAllLevels(): Promise<Level[]> {
   return prisma.level.findMany();
@@ -37,7 +37,7 @@ export async function listTop10ByLevelId(id: string) {
   })
 }
 
-export async function createLevel({ title, imageUrl, solutions }: LevelDTO) {
+export async function createLevel({ title, imageUrl, solutions }: CreateLevelInput) {
   return prisma.level.create({
     data: {
       title,
@@ -52,7 +52,7 @@ export async function createLevel({ title, imageUrl, solutions }: LevelDTO) {
   }
   );
 }
-export async function editLevel({ id, title, imageUrl }: Level, solutions: Coordinate[]) {
+export async function editLevel({ id, title, imageUrl, solutions }: EditLevelInput) {
   return prisma.level.update({
     where: { id },
     data: {

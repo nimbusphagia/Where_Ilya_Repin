@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
-import { MiddlewareArgs } from '../src/types/controller.type';
 import { ZodError } from 'zod';
 import { AppError } from '../src/errors';
 import { Prisma } from '../prisma/generated/client';
@@ -17,7 +16,7 @@ const allowedOrigins = [
 app.use(cors({
   origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "admin-secret"],
 }));
 
 app.use('/', indexRouter);
@@ -36,4 +35,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   }
   return res.status(500).json({ error: "Internal server error" });
 });
+
 export default app;

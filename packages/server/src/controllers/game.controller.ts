@@ -1,8 +1,8 @@
+import { Request, Response, NextFunction } from "express";
 import { CreateGameSchema, EditGameSchema } from "../schemas/game.schema";
 import { createGame, editGame } from "../services/game.service";
-import { MiddlewareArgs } from "../types/controller.type";
 
-export async function startGame({ req, res, next }: MiddlewareArgs) {
+export async function startGame(req: Request, res: Response, next: NextFunction) {
   try {
     const input = CreateGameSchema.parse(req.body);
     const game = await createGame(input);
@@ -11,7 +11,7 @@ export async function startGame({ req, res, next }: MiddlewareArgs) {
     next!(error);
   }
 }
-export async function endGame({ req, res, next }: MiddlewareArgs) {
+export async function endGame(req: Request, res: Response, next: NextFunction) {
   try {
     const input = EditGameSchema.parse(req.body);
     const game = await editGame(input);

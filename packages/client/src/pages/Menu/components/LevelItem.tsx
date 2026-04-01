@@ -1,41 +1,26 @@
+import type { ThumbnailLevel } from "../../../schemas/level.schema"
 import s from "../Menu.module.css"
-import type { Level } from "../types/ui"
 
-type LevelItemProps = Level & {
+type LevelItemProps = ThumbnailLevel & {
   handleClick: () => void,
   className: string,
-  thumbnail: string,
 }
-export function LevelItem({ name, thumbnail, unlocked, handleClick, className }: LevelItemProps) {
+export function LevelItem({ title, imageUrl, handleClick, className }: LevelItemProps) {
   return (
     <>
-      {unlocked ?
-        <button
-          type="button"
-          className={`${s.lvl} ${className} ${s.unlocked}`}
-          onClick={() => handleClick()}
-        >
-          <img
-            className={s.lvlThumbnail}
-            src={thumbnail}
-            alt="" />
-          {name}
-        </button>
-        :
-        <div
-          className={`${s.lvl} ${className} ${s.locked}`}
-        >
-          <img
-            className={s.lvlThumbnail}
-            src={thumbnail}
-            alt="" />
-          <div
-            className={s.lock}
-          >
-            {name}
-          </div>
-        </div>
-      }
+
+      <button
+        type="button"
+        className={`${s.lvl} ${className}`}
+        onClick={() => handleClick()}
+      >
+        <img
+          className={s.lvlThumbnail}
+          src={imageUrl}
+          alt="" />
+        {title}
+      </button>
+
     </>
   )
 }

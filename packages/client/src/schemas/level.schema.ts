@@ -20,7 +20,12 @@ export const EditLevelSchema = z.object({
     y: z.number(),
   })),
 });
-
+export const ThumbnailLevelSchema = z.object({
+  id: z.guid(),
+  title: z.string(),
+  imageUrl: z.string(),
+});
 export type CoordinateInput = z.infer<typeof CoordinateSchema>;
 export type CreateLevelInput = z.infer<typeof CreateLevelSchema>;
-export type EditLevelInput = z.infer<typeof EditLevelSchema>;
+export type LevelInput = z.infer<typeof EditLevelSchema>;
+export type ThumbnailLevel = z.infer<typeof ThumbnailLevelSchema>;

@@ -1,35 +1,14 @@
-import type { GameLevel } from "../../types/entities";
+import type { LoaderFunctionArgs } from "react-router";
+import type { LevelInput } from "../../schemas/level.schema";
+import apiClient from "../../utils/apiClient";
 
 export type GameLoaderProps = {
-  game: GameLevel,
+  game: LevelInput,
   nextId: string
 }
 
-const mockGame: GameLevel = {
-  id: "1",
-  name: "First Level",
-  source: "https://res.cloudinary.com/dlsa973vu/image/upload/v1774311850/wassily_kandinsky-yellow_red_blue-1925-obelisk-art-history_yhtxqa.jpg",
-  solutions: [
-    {
-      id: "1a",
-      x: 17.9,
-      y: 12.5,
-    },
-    {
-      id: "1b",
-      x: 40.8,
-      y: 30.8,
-    },
-    {
-      id: "1c",
-      x: 68.4,
-      y: 80.7,
-    },
-  ],
-};
-
-
-export async function GameLoader(): Promise<GameLoaderProps> {
-  const game = mockGame;
+export async function GameLoader({ params }: LoaderFunctionArgs): Promise<GameLoaderProps> {
+  const id = params.id;
+  const game = await apiClient<LevelInput>(`/levels/${id}`);
   return { game, nextId: "2" };
 };

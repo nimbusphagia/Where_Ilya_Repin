@@ -9,6 +9,9 @@ export async function getLevelById(id: string): Promise<Level | null> {
   return prisma.level.findUnique({
     where: {
       id
+    },
+    include: {
+      solutions: true,
     }
   })
 }

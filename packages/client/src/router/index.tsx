@@ -20,7 +20,7 @@ export const router = createBrowserRouter(
           action: MenuAction,
         },
         {
-          path: 'game/:mapId',
+          path: 'game/:id',
           Component: Game,
           loader: GameLoader,
           action: GameAction,

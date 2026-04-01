@@ -13,7 +13,6 @@ import { RankList } from '../../components/RankList';
 import { useGameTimer } from './hooks/useGameTimer';
 import { ThumbPicker } from './components/ThumbPicker';
 import { isMatch } from '../../utils/game';
-import type { Solution } from '../../types/entities';
 
 type GameState = "pre-game" | "playing" | "post-game";
 
@@ -23,7 +22,7 @@ export function Game() {
   const [gameState, setGameState] = useState<GameState>("pre-game");
   const [picking, setPicking] = useState<boolean>(false);
   const [targetCoord, setTargetCoord] = useState<Coordinate | null>(null);
-  const [solutions, setSolutions] = useState<Solution[]>(
+  const [solutions, setSolutions] = useState(
     () => game.solutions.map((coord) => ({ ...coord, solved: false }))
   );
   const isPlaying = gameState === "playing";
@@ -32,11 +31,11 @@ export function Game() {
   const overlay: Record<Exclude<GameState, "playing">, React.ReactNode> = {
     "pre-game": (
       <PreGameMenu
-        title={game.name}
+        title={game.title}
         handleStart={start}>
         <Thumbnails
           solutions={solutions}
-          imgSrc={game.source}
+          imgSrc={game.imageUrl}
         />
       </PreGameMenu>
     ),
@@ -97,12 +96,12 @@ export function Game() {
           className={s.main}
         >
           <GameHeader
-            title={game.name}
+            title={game.title}
             time={timer.time}
           >
             <Thumbnails
               solutions={solutions}
-              imgSrc={game.source}
+              imgSrc={game.imageUrl}
             />
           </GameHeader>
           <div
@@ -114,7 +113,7 @@ export function Game() {
             >
               <img
                 className={`${s.gameImg} ${!isPlaying ? gs.blurred : ""}`}
-                src={game.source}
+                src={game.imageUrl}
                 alt=""
                 onClick={isPlaying ? handleImgClick : undefined}
               />
@@ -124,7 +123,7 @@ export function Game() {
                   position={targetCoord!}
                 >
                   <Thumbnails
-                    imgSrc={game.source}
+                    imgSrc={game.imageUrl}
                     solutions={solutions}
                     handleClick={handlePickerClick}
                   />

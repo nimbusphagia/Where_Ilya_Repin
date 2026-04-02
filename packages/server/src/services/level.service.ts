@@ -1,9 +1,13 @@
 import type { Level } from "../../prisma/generated/client";
 import { prisma } from "../../lib/prisma";
-import { CreateLevelInput, EditLevelInput } from "../schemas/level.schema";
+import { CreateLevelInput, EditImageInput, EditIndexInput, EditLevelInput } from "../schemas/level.schema";
 
 export async function listAllLevels(): Promise<Level[]> {
-  return prisma.level.findMany();
+  return prisma.level.findMany({
+    orderBy: {
+      index: "asc"
+    }
+  });
 }
 export async function getLevelById(id: string): Promise<Level | null> {
   return prisma.level.findUnique({
@@ -40,9 +44,10 @@ export async function listTop10ByLevelId(id: string) {
   })
 }
 
-export async function createLevel({ title, imageUrl, solutions }: CreateLevelInput) {
+export async function createLevel({ index, title, imageUrl, solutions }: CreateLevelInput) {
   return prisma.level.create({
     data: {
+      index,
       title,
       imageUrl,
       solutions: {
@@ -55,10 +60,11 @@ export async function createLevel({ title, imageUrl, solutions }: CreateLevelInp
   }
   );
 }
-export async function editLevel({ id, title, imageUrl, solutions }: EditLevelInput) {
+export async function editLevel({ id, index, title, imageUrl, solutions }: EditLevelInput) {
   return prisma.level.update({
     where: { id },
     data: {
+      index,
       title,
       imageUrl,
       solutions: {
@@ -76,6 +82,28 @@ export async function editLevel({ id, title, imageUrl, solutions }: EditLevelInp
           }
         }))
       },
+    },
+    include: {
+      solutions: true,
+    },
+  });
+}
+export async function editLevelIndex({ id, index }: EditIndexInput) {
+  return prisma.level.update({
+    where: { id },
+    data: {
+      index,
+    },
+    include: {
+      solutions: true,
+    },
+  });
+}
+export async function editLevelImage({ id, imageUrl }: EditImageInput) {
+  return prisma.level.update({
+    where: { id },
+    data: {
+      imageUrl,
     },
     include: {
       solutions: true,

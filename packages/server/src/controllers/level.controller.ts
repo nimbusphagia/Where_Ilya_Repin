@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { listAllLevels, getLevelById, listTop10ByLevelId, createLevel, editLevel } from "../services/level.service";
-import { CreateLevelSchema, EditLevelSchema } from "../schemas/level.schema";
+import { listAllLevels, getLevelById, listTop10ByLevelId, createLevel, editLevel, editLevelIndex, editLevelImage } from "../services/level.service";
+import { CreateLevelSchema, EditLevelImageSchema, EditLevelIndexSchema, EditLevelSchema } from "../schemas/level.schema";
 import { IdParamsSchema } from "../schemas/controller.schema";
 
 export async function getLevels(req: Request, res: Response, next: NextFunction) {
@@ -53,6 +53,34 @@ export async function update(req: Request, res: Response, next: NextFunction) {
       ...req.body,
     });
     const level = await editLevel(input);
+    return res.status(200).json(level);
+  } catch (error) {
+    console.error(error);
+    next!(error)
+  };
+}
+export async function updateIndex(req: Request, res: Response, next: NextFunction) {
+
+  try {
+    const input = EditLevelIndexSchema.parse({
+      id: req.params.id,
+      ...req.body,
+    });
+    const level = await editLevelIndex(input);
+    return res.status(200).json(level);
+  } catch (error) {
+    console.error(error);
+    next!(error)
+  };
+}
+export async function updateImage(req: Request, res: Response, next: NextFunction) {
+
+  try {
+    const input = EditLevelImageSchema.parse({
+      id: req.params.id,
+      ...req.body,
+    });
+    const level = await editLevelImage(input);
     return res.status(200).json(level);
   } catch (error) {
     console.error(error);

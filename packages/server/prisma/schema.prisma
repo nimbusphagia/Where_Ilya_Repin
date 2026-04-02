@@ -15,6 +15,7 @@ model Player {
 
 model Level {
   id        String       @id @default(uuid())
+  index     Int          @unique
   title     String
   imageUrl  String
   solutions Coordinate[]

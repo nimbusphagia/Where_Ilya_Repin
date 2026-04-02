@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { create, update } from "../controllers/level.controller";
+import { create, update, updateImage, updateIndex } from "../controllers/level.controller";
 import { AppError } from "../errors";
 
 export function requireAdminSecret(req: Request, res: Response, next: NextFunction) {
@@ -18,5 +18,7 @@ const router = Router();
 
 router.post("/level", requireAdminSecret, create);
 router.patch("/level/:id", requireAdminSecret, update);
+router.patch("/level/:id/index", requireAdminSecret, updateIndex);
+router.patch("/level/:id/image", requireAdminSecret, updateImage);
 
 export default router;

@@ -25,9 +25,13 @@ export function Menu() {
     <main
       className={s.body}
     >
+      <img
+        className={gs.bgImg}
+        src="https://res.cloudinary.com/dlsa973vu/image/upload/q_auto/f_auto/v1775144136/resized-image_1_dsoztq.jpg"
+        alt="" />
       <h1
         className={`${gs.logo} ${s.title}`}
-      >Where is the Bauhaus?</h1>
+      >Where is Ilya Repin</h1>
       <div
         className={s.levels}
       >
@@ -41,16 +45,19 @@ export function Menu() {
                 title={lvl.title}
                 imageUrl={lvl.imageUrl}
                 handleClick={() => setSelectedLvl(lvl)}
-                className={lvl === selectedLvl ? s.selectedLvl : ""}
+                isSelected={selectedLvl === lvl}
               />
             )
           })
         }
       </div>
-      <SubMenu
-        actions={menuActions}
-        className={s.subMenu}
-      />
+      <div className={s.subMenuContainer}>
+        <SubMenu
+          actions={menuActions}
+          className={s.subMenu}
+        />
+
+      </div>
     </main>
   )
 }

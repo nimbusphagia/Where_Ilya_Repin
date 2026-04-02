@@ -3,12 +3,11 @@ import type { LevelInput } from "../../schemas/level.schema";
 import apiClient from "../../utils/apiClient";
 
 export type GameLoaderProps = {
-  game: LevelInput,
-  nextId: string
+  level: LevelInput,
 }
 
 export async function GameLoader({ params }: LoaderFunctionArgs): Promise<GameLoaderProps> {
   const id = params.id;
-  const game = await apiClient<LevelInput>(`/levels/${id}`);
-  return { game, nextId: "2" };
+  const level = await apiClient<LevelInput>(`/levels/${id}`);
+  return { level };
 };

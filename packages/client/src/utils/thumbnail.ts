@@ -3,23 +3,12 @@ import type { Coordinate } from "../types/entities";
 export async function extractThumbnail(
   src: string,
   coord: Coordinate,
-  thumbW = 80,
-  thumbH = 80,
-  zoom = 1
+  percent = 20
 ): Promise<string> {
   const img = await loadImage(src);
 
-  const srcAspect = img.naturalWidth / img.naturalHeight;
-  const thumbAspect = thumbW / thumbH;
-
-  let cropW: number, cropH: number;
-  if (srcAspect > thumbAspect) {
-    cropW = thumbW / zoom;
-    cropH = cropW / srcAspect;
-  } else {
-    cropH = thumbH / zoom;
-    cropW = cropH * srcAspect;
-  }
+  const cropW = (percent / 100) * img.naturalWidth;
+  const cropH = (percent / 100) * img.naturalHeight;
 
   const idealCropX = (coord.x / 100) * img.naturalWidth - cropW / 2;
   const idealCropY = (coord.y / 100) * img.naturalHeight - cropH / 2;
@@ -27,26 +16,12 @@ export async function extractThumbnail(
   const clampedX = Math.max(0, Math.min(idealCropX, img.naturalWidth - cropW));
   const clampedY = Math.max(0, Math.min(idealCropY, img.naturalHeight - cropH));
 
-  const shiftX = clampedX - idealCropX;
-  const shiftY = clampedY - idealCropY;
-
-  const destW = cropW * zoom;
-  const destH = cropH * zoom;
-
-  const destOffsetX = (thumbW - destW) / 2 + shiftX * zoom;
-  const destOffsetY = (thumbH - destH) / 2 + shiftY * zoom;
-
   const canvas = document.createElement('canvas');
-  canvas.width = thumbW;
-  canvas.height = thumbH;
+  canvas.width = cropW;
+  canvas.height = cropH;
 
   const ctx = canvas.getContext('2d')!;
-  ctx.clearRect(0, 0, thumbW, thumbH);
-  ctx.drawImage(
-    img,
-    clampedX, clampedY, cropW, cropH,
-    destOffsetX, destOffsetY, destW, destH
-  );
+  ctx.drawImage(img, clampedX, clampedY, cropW, cropH, 0, 0, cropW, cropH);
 
   return canvas.toDataURL();
 }

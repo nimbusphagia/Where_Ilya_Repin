@@ -14,10 +14,6 @@ export function Menu() {
     <main
       className={s.body}
     >
-      <img
-        className={gs.bgImg}
-        src="https://res.cloudinary.com/dlsa973vu/image/upload/q_auto/f_auto/v1775144136/resized-image_1_dsoztq.jpg"
-        alt="" />
       <h1
         className={`${gs.logo} ${s.title}`}
       >Where is Ilya Repin</h1>

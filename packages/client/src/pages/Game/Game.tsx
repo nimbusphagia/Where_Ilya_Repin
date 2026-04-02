@@ -3,7 +3,8 @@ import { useLoaderData } from 'react-router'
 import s from './Game.module.css'
 import gs from "../../main.module.css"
 import type { GameLoaderProps } from './Game.loader';
-import type { Coordinate } from '../../types/entities';
+import type { CoordinateInput } from '../../schemas/level.schema';
+import type { Solution } from '../../schemas/game.schema';
 import { useRef, useState } from 'react';
 import { Thumbnails } from './components/Thumbnails';
 import { GameHeader } from './components/GameHeader';
@@ -18,12 +19,12 @@ type GameState = "pre-game" | "playing" | "post-game";
 
 
 export function Game() {
-  const { game, nextId } = useLoaderData<GameLoaderProps>();
+  const { level } = useLoaderData<GameLoaderProps>();
   const [gameState, setGameState] = useState<GameState>("pre-game");
   const [picking, setPicking] = useState<boolean>(false);
-  const [targetCoord, setTargetCoord] = useState<Coordinate | null>(null);
-  const [solutions, setSolutions] = useState(
-    () => game.solutions.map((coord) => ({ ...coord, solved: false }))
+  const [targetCoord, setTargetCoord] = useState<CoordinateInput | null>(null);
+  const [solutions, setSolutions] = useState<Solution[]>(
+    () => level.solutions.map((coord) => ({ ...coord, solved: false }))
   );
   const isPlaying = gameState === "playing";
   const timer = useGameTimer();
@@ -31,11 +32,11 @@ export function Game() {
   const overlay: Record<Exclude<GameState, "playing">, React.ReactNode> = {
     "pre-game": (
       <PreGameMenu
-        title={game.title}
+        title={level.title}
         handleStart={start}>
         <Thumbnails
           solutions={solutions}
-          imgSrc={game.imageUrl}
+          imgSrc={level.imageUrl}
         />
       </PreGameMenu>
     ),
@@ -43,7 +44,7 @@ export function Game() {
       <PostGameMenu
         title="You won!"
         handleRetry={() => console.log("retry")}
-        nextLevel={nextId}>
+        nextLevel={String(level.index + 1)}>
         <RankList />
       </PostGameMenu>
     ),
@@ -64,7 +65,7 @@ export function Game() {
     setTargetCoord({ x, y });
     setPicking(true);
   }
-  function handlePickerClick(solution: Coordinate) {
+  function handlePickerClick(solution: Solution) {
     if (!targetCoord) return;
     console.log("Is Picking:", targetCoord, solution)
     if (!isMatch(targetCoord, { x: solution.x, y: solution.y })) {
@@ -73,16 +74,17 @@ export function Game() {
       return;
     }
 
-    const updated = solutions.map(s =>
-      s.id === solution.id ? { ...s, solved: true } : s
+    setSolutions(prev =>
+      prev.map(s =>
+        s.id === solution.id ? { ...s, solved: true } : s
+      )
     );
-    setSolutions(updated);
-    console.log("matched!", updated);
+    console.log("matched!", solutions);
     setPicking(false);
     setTargetCoord(null);
     setPicking(false);
 
-    if (updated.every(s => s.solved)) {
+    if (solutions.every(s => s.solved)) {
       timer.stop();
       setGameState("post-game");
     }
@@ -96,13 +98,9 @@ export function Game() {
           className={s.main}
         >
           <GameHeader
-            title={game.title}
+            title={level.title}
             time={timer.time}
           >
-            <Thumbnails
-              solutions={solutions}
-              imgSrc={game.imageUrl}
-            />
           </GameHeader>
           <div
             className={s.game}
@@ -113,7 +111,7 @@ export function Game() {
             >
               <img
                 className={`${s.gameImg} ${!isPlaying ? gs.blurred : ""}`}
-                src={game.imageUrl}
+                src={level.imageUrl}
                 alt=""
                 onClick={isPlaying ? handleImgClick : undefined}
               />
@@ -123,7 +121,7 @@ export function Game() {
                   position={targetCoord!}
                 >
                   <Thumbnails
-                    imgSrc={game.imageUrl}
+                    imgSrc={level.imageUrl}
                     solutions={solutions}
                     handleClick={handlePickerClick}
                   />
@@ -139,6 +137,14 @@ export function Game() {
                 {overlay[gameState]}
               </div>
             }
+          </div>
+          <div
+            className={s.sideSolutionsContainer}
+          >
+            <Thumbnails
+              solutions={solutions}
+              imgSrc={level.imageUrl}
+            />
           </div>
         </main >
       </div >

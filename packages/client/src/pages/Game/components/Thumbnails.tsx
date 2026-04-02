@@ -1,11 +1,11 @@
 import { SubjectThumbnail } from "./SubjectThumbnail"
 import s from "../Game.module.css";
-import type { Coordinate, Solution } from "../../../types/entities";
+import type { Solution } from "../../../schemas/game.schema";
 
 type Props = {
   solutions: Solution[];
   imgSrc: string,
-  handleClick?: (solution: Coordinate) => void,
+  handleClick?: (solution: Solution) => void,
 }
 
 export function Thumbnails({ imgSrc, solutions, handleClick }: Props) {
@@ -17,9 +17,7 @@ export function Thumbnails({ imgSrc, solutions, handleClick }: Props) {
         key={solution.x + "-" + solution.y}
         src={imgSrc}
         coord={solution}
-        thumbH={80}
-        thumbW={80}
-        zoom={1}
+        percent={10}
         className={solution.solved ? s.solved : ""}
         handleClick={handleClick ? () => handleClick(solution) : undefined}
       />

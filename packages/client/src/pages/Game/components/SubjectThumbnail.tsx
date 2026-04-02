@@ -6,9 +6,7 @@ import { extractThumbnail } from "../../../utils/thumbnail";
 type Props = {
   src: string,
   coord: Coordinate,
-  thumbW?: number,
-  thumbH: number,
-  zoom?: number,
+  percent: number,
   handleClick?: (solution: Coordinate) => void,
   className?: string,
 }
@@ -16,23 +14,19 @@ type Props = {
 export function SubjectThumbnail({
   src,
   coord,
-  thumbW = 80,
-  thumbH = 80,
-  zoom = 3,
+  percent = 10,
   handleClick,
   className
 }: Props) {
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   useEffect(() => {
-    extractThumbnail(src, coord, thumbW, thumbH, zoom).then(setDataUrl);
+    extractThumbnail(src, coord, percent).then(setDataUrl);
   }, [src, coord.x, coord.y]);
 
   return (
     <img
       src={dataUrl ? dataUrl : undefined}
       className={`${s.thumbImg} ${className}`}
-      width={thumbW}
-      height={thumbH}
       alt=""
       onClick={handleClick ? () => handleClick(coord) : undefined}
     />

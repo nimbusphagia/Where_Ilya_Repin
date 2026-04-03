@@ -1,15 +1,15 @@
 import type { PropsWithChildren } from "react"
-import type { Coordinate } from "../../../types/entities"
 import s from "../Game.module.css"
+import type { CoordinateInput } from "../../../schemas/level.schema"
 
 type Props = {
-  position: Coordinate,
+  position: CoordinateInput,
 }
 
 export function ThumbPicker({ position, children }: PropsWithChildren<Props>) {
   return (
     <div
-      className={s.thumbnailPicker}
+      className={`${s.thumbnailPicker} `}
       style={{
         top: `${position.y}%`,
         left: `${position.x}%`,

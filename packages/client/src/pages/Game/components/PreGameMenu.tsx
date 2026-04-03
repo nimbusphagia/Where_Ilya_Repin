@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react"
-import gs from "../../../main.module.css"
 import s from "../Game.module.css"
+import gs from "../../../main.module.css"
 
 type Props = {
   title: string,
@@ -9,23 +9,24 @@ type Props = {
 
 export function PreGameMenu({ title, handleStart, children }: PropsWithChildren<Props>) {
   return (
-    <div
-      className={`${gs.subMenu} ${s.subMenu}`}
-    >
+    <>
       <div
-        className={s.smHeader}
+        className={`${s.preGameMenu} ${gs.glass}`}
       >
-        <h1>{title}</h1>
+        <div
+          className={s.preGameHeader}
+        >
+          <h1>{title}</h1>
+        </div>
+        {children}
+        <button
+          className={s.startBtn}
+          type='button'
+          onClick={handleStart}
+        >
+          START
+        </button>
       </div>
-      {children}
-      <button
-        className={s.startBtn}
-        type='button'
-        onClick={handleStart}
-      >
-        START
-      </button>
-    </div>
-
+    </>
   )
 }

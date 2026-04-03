@@ -1,6 +1,6 @@
 import type { Level } from "../../prisma/generated/client";
 import { prisma } from "../../lib/prisma";
-import { CreateLevelInput, EditImageInput, EditIndexInput, EditLevelInput } from "../schemas/level.schema";
+import { CreateLevelInput, EditImageInput, EditIndexInput, EditLevelInput, EditSolutionsInput } from "../schemas/level.schema";
 
 export async function listAllLevels(): Promise<Level[]> {
   return prisma.level.findMany({
@@ -104,6 +104,27 @@ export async function editLevelImage({ id, imageUrl }: EditImageInput) {
     where: { id },
     data: {
       imageUrl,
+    },
+    include: {
+      solutions: true,
+    },
+  });
+}
+export async function editLevelSolutions({ id, solutions }: EditSolutionsInput) {
+  return prisma.level.update({
+    where: { id },
+    data: {
+      solutions: {
+        updateMany: solutions.map(({ id, x, y }) => ({
+          where: {
+            id,
+          },
+          data: {
+            x,
+            y
+          }
+        }))
+      },
     },
     include: {
       solutions: true,

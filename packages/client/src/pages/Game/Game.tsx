@@ -91,17 +91,24 @@ export function Game() {
   }
   return (
     <GameContext.Provider value={{ handlePickerClick }}>
+
+      <div className={gs.vignette}></div>
       <div
         className={s.body}
       >
+
         <main
           className={s.main}
         >
-          <GameHeader
-            title={level.title}
-            time={timer.time}
-          >
-          </GameHeader>
+          {isPlaying ?
+            <GameHeader
+              title={level.title}
+              time={timer.time}
+            >
+            </GameHeader>
+            :
+            <div></div>
+          }
           <div
             className={s.game}
           >
@@ -129,23 +136,28 @@ export function Game() {
                 </ThumbPicker>
               }
             </div>
+          </div>
+          {isPlaying ?
+            <>
 
-            {!isPlaying &&
               <div
-                className={gs.veil}
+                className={s.sideSolutionsContainer}
               >
-                {overlay[gameState]}
+
+
+                <Thumbnails
+                  solutions={solutions}
+                  imgSrc={level.imageUrl}
+                />
               </div>
-            }
-          </div>
-          <div
-            className={s.sideSolutionsContainer}
-          >
-            <Thumbnails
-              solutions={solutions}
-              imgSrc={level.imageUrl}
-            />
-          </div>
+            </>
+
+            :
+            <>
+              <div className={gs.vignette}></div>
+              {overlay[gameState]}
+            </>
+          }
         </main >
       </div >
     </GameContext.Provider>

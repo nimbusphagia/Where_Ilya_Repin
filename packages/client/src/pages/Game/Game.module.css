@@ -3,92 +3,137 @@
   position: relative;
   background-color: rgb(0, 0, 0, 0.2);
   height: 100vh;
+  color: rgb(0, 0, 0, 0.9);
+  display: flex;
+  justify-items: center;
+  width: 100vw;
 }
 
 .main {
   box-sizing: border-box;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-rows: minmax(80px, auto) min-content;
+  grid-template-columns: 95vw;
   gap: 20px;
+  margin: auto;
 }
 
 .game {
+  grid-row: 2/3;
   position: relative;
-  width: fit-content;
-  max-width: 100%;
-  max-height: 80vh;
+  height: 80vh;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  place-self: center;
 }
 
 .imgWrapper {
   height: 100%;
-  width: 100%;
 }
 
 .gameImg {
-  width: 100%;
+  width: auto;
   height: 100%;
-  object-fit: contain;
   cursor:
     /*url("/src/assets/icons/square-cursor.png") 32 32,*/
     crosshair;
 }
 
 .header {
+  min-height: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: rgb(20, 20, 20, 0.3);
+  width: fit-content;
+  place-self: center;
+  padding: 5px 50px;
+  color: rgb(230, 220, 220, 0.9);
 }
 
 .solutions {
   display: flex;
   gap: 15px;
+  padding: 12px;
 }
 
 .thumbnailPicker {
   position: absolute;
   transform: translate(-50%, -120%);
-  background-color: rgb(0, 0, 0, 0.5);
-  padding: 10px 15px;
-  border-radius: 5px;
-  display: flex;
-  gap: 15px;
 }
 
-.subMenu {
-  height: 50%;
-  width: 50%;
-  background-color: rgb(255, 255, 255, 0.2);
+.thumbnailPicker .solutions {
+  border-radius: 5px;
+  background-color: rgb(180, 180, 180, 0.2);
+  backdrop-filter: blur(1px);
+}
+
+.thumbnailPicker .thumbImg {
+  width: 110px;
+  transition: transform ease-out 0.2s;
+}
+
+.thumbnailPicker .thumbImg:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.preGameMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  width: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  gap: 10px;
+  padding: 20px 30px;
+  text-align: center;
+  background-color: rgb(140, 140, 140, 0.2);
+  backdrop-filter: blur(1px);
 }
 
-.subMenu .solutions {
+.preGameHeader {
+  font-size: 15px;
+}
+
+.preGameMenu .solutions {
+  background-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
   width: 100%;
-  height: 150px;
-  display: flex;
   justify-content: space-around;
 }
 
-.subMenu .thumbImg {
+.preGameMenu .thumbImg {
   width: auto;
   height: 100%;
   border-radius: 5px;
 }
 
+.startBtn {
+  font-size: 26px;
+  padding: 2px 35px;
+  border-radius: inherit;
+  margin: auto;
+  transition: color ease-out 0.1s, background-color ease-out 0.1s, box-shadow ease-out 0.1s;
+}
+
+.startBtn:hover {
+  color: rgb(220, 220, 220, 0.8);
+  background-color: rgb(0, 0, 0, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
 .thumbImg {
   width: 80px;
   height: auto;
-  border: 3px dashed transparent;
-}
-
-.thumbnailPicker .thumbImg:hover {
-  border: 3px dashed black;
-  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border-radius: inherit;
 }
 
 .solved {
@@ -109,15 +154,20 @@
 
 .sideSolutionsContainer .solutions {
   width: fit-content;
-  background-color: rgb(0, 0, 0, 0.4);
+  background-color: rgb(50, 50, 50, 0.4);
   padding: 10px 15px;
   border-radius: 5px;
-  opacity: 0.8;
-  transform: scale(0.5);
+  opacity: 0.4;
+  transform: scale(0.4);
   transition: opacity ease-in-out 0.2s, transform ease-in-out 0.5s;
+}
+
+.sideSolutionsContainer .thumbImg {
+  max-height: 100px;
+  width: auto;
 }
 
 .sideSolutionsContainer .solutions:hover {
   opacity: 1;
-  transform: scale(1) translateY(-30%);
+  transform: scale(0.8) translateY(-30%);
 }

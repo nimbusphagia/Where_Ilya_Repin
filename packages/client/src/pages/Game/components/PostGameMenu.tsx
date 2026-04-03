@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react"
 import gs from "../../../main.module.css"
 import s from "../Game.module.css"
-import { NavLink } from "react-router"
+import { NavLink, useNavigate } from "react-router"
 
 type Props = {
   title: string,
@@ -10,12 +10,13 @@ type Props = {
 }
 
 export function PostGameMenu({ title, handleRetry, nextLevel, children }: PropsWithChildren<Props>) {
+  const navigate = useNavigate();
   return (
     <div
-      className={gs.subMenu}
+      className={`${s.postGameMenu} ${gs.glass}`}
     >
       <div
-        className={s.smHeader}
+        className={s.postGameHeader}
       >
         <h1>{title}</h1>
       </div>
@@ -23,7 +24,7 @@ export function PostGameMenu({ title, handleRetry, nextLevel, children }: PropsW
       <button
         className={s.retryBtn}
         type='button'
-        onClick={handleRetry}
+        onClick={() => navigate(0)}
       >
         Try again
       </button>
@@ -31,7 +32,7 @@ export function PostGameMenu({ title, handleRetry, nextLevel, children }: PropsW
         className={s.nextBtn}
         to={`/game/${nextLevel}`}
       >
-        Try again
+        Next Level
       </NavLink>
     </div>
 

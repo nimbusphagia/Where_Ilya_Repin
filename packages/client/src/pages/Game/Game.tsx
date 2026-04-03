@@ -67,32 +67,29 @@ export function Game() {
   }
   function handlePickerClick(solution: Solution) {
     if (!targetCoord) return;
-    console.log("Is Picking:", targetCoord, solution)
     if (!isMatch(targetCoord, { x: solution.x, y: solution.y })) {
       setTargetCoord(null);
       setPicking(false);
       return;
     }
 
-    setSolutions(prev =>
-      prev.map(s =>
-        s.id === solution.id ? { ...s, solved: true } : s
-      )
+    const updatedSolutions = solutions.map(s =>
+      s.id === solution.id ? { ...s, solved: true } : s
     );
-    console.log("matched!", solutions);
+
+    setSolutions(updatedSolutions);
     setPicking(false);
     setTargetCoord(null);
-    setPicking(false);
 
-    if (solutions.every(s => s.solved)) {
+    if (updatedSolutions.every(s => s.solved)) {
       timer.stop();
       setGameState("post-game");
     }
   }
   return (
     <GameContext.Provider value={{ handlePickerClick }}>
-
       <div className={gs.vignette}></div>
+
       <div
         className={s.body}
       >

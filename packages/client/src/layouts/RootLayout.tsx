@@ -11,6 +11,7 @@ export function RootLayout() {
         className={gs.bgImg}
         src="https://res.cloudinary.com/dlsa973vu/image/upload/q_auto/f_auto/v1775144136/resized-image_1_dsoztq.jpg"
         alt="" />
+      <div className={gs.vignette}></div>
       <Outlet
       />
     </>

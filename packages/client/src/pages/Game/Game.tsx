@@ -10,10 +10,10 @@ import { Thumbnails } from './components/Thumbnails';
 import { GameHeader } from './components/GameHeader';
 import { PreGameMenu } from './components/PreGameMenu';
 import { PostGameMenu } from './components/PostGameMenu';
-import { RankList } from '../../components/RankList';
 import { useGameTimer } from './hooks/useGameTimer';
 import { ThumbPicker } from './components/ThumbPicker';
 import { isMatch } from '../../utils/game';
+import { formatTime } from '../../utils/formatting';
 
 type GameState = "pre-game" | "playing" | "post-game";
 
@@ -42,10 +42,9 @@ export function Game() {
     ),
     "post-game": (
       <PostGameMenu
-        title="You won!"
-        handleRetry={() => console.log("retry")}
+        title={level.title}
+        time={formatTime(timer.time)}
         nextLevel={String(level.index + 1)}>
-        <RankList />
       </PostGameMenu>
     ),
   };
@@ -140,7 +139,6 @@ export function Game() {
               <div
                 className={s.sideSolutionsContainer}
               >
-
 
                 <Thumbnails
                   solutions={solutions}

@@ -14,17 +14,15 @@ export function Thumbnails({ imgSrc, solutions, handleClick }: Props) {
     className={`${s.solutions} ${gs.glass}`}
   >
     {solutions?.map((solution) =>
-      <>
 
-        <SubjectThumbnail
-          key={solution.x + "-" + solution.y}
-          src={imgSrc}
-          solution={solution}
-          percent={10}
-          handleClick={handleClick ? () => handleClick(solution) : undefined}
-        />
+      <SubjectThumbnail
+        key={solution.id}
+        src={imgSrc}
+        solution={solution}
+        percent={10}
+        handleClick={handleClick ? () => handleClick(solution) : undefined}
+      />
 
-      </>
     )}
   </div>
   )

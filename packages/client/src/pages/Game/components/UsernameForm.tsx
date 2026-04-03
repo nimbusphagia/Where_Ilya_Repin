@@ -1,12 +1,17 @@
 import { Form } from "react-router";
 import gs from "../../../main.module.css"
 import s from "../Game.module.css"
-import type { PropsWithChildren } from "react";
-
-export function UsernameForm({ children }: PropsWithChildren) {
+import { useState, type PropsWithChildren } from "react";
+import type { Game } from "../../../schemas/game.schema";
+import { useGameContext } from "../Game.context";
+type FormProps = {
+  handleSubmit: (username: string, game: Game | null) => void,
+}
+export function UsernameForm({ handleSubmit, children }: PropsWithChildren<FormProps>) {
+  const { game } = useGameContext();
+  const [name, setName] = useState<string>("");
   return (
     <Form
-      method="PATCH"
       className={gs.form}
     >
       {children}
@@ -22,13 +27,16 @@ export function UsernameForm({ children }: PropsWithChildren) {
           type="text"
           maxLength={20}
           required={true}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div
         className={s.btnContainer}
       >
         <button
-          type="submit"
+          type="button"
+          onClick={() => handleSubmit(name, game)}
           className={gs.btn}
         >Submit</button>
       </div>

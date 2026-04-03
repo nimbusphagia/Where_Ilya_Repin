@@ -13,17 +13,27 @@ model Game {
   timeMs    Int?
 }
 */
-export const StartGameSchema = z.object({
+export const GameSchema = z.object({
   id: z.guid(),
+  playerId: z.guid(),
   levelId: z.guid(),
   startedAt: z.date(),
+  solvedAt: z.date(),
+  timeMs: z.number()
+})
+export const StartGameSchema = z.object({
+  levelId: z.guid(),
 })
 export const CreateGameSchema = z.object({
   levelId: z.uuid(),
 });
-export const EditGameSchema = z.object({
+export const RegisterUserSchema = z.object({
   id: z.guid(),
-  playerId: z.uuid(),
+  levelId: z.uuid(),
+  username: z.string(),
+});
+export const EndGameSchema = z.object({
+  id: z.guid(),
   levelId: z.uuid(),
 });
 export const SolutionSchema = CoordinateSchema.extend({
@@ -32,4 +42,6 @@ export const SolutionSchema = CoordinateSchema.extend({
 
 export type Solution = z.infer<typeof SolutionSchema>;
 export type CreateGameInput = z.infer<typeof CreateGameSchema>;
-export type EditGameInput = z.infer<typeof EditGameSchema>;
+export type StopGameInput = z.infer<typeof EndGameSchema>;
+export type GameUserInput = z.infer<typeof RegisterUserSchema>;
+export type Game = z.infer<typeof GameSchema>;

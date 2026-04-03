@@ -1,8 +1,9 @@
 import { createContext, useContext } from 'react';
-import type { Solution } from '../../schemas/game.schema';
+import type { Game, Solution } from '../../schemas/game.schema';
 
 type GameContextType = {
-  handlePickerClick: (solution: Solution) => void;
+  handlePickerClick: (solution: Solution) => void,
+  game: Game | null,
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

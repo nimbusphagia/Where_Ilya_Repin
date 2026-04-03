@@ -9,7 +9,7 @@ datasource db {
 
 model Player {
   id       String @id @default(uuid())
-  username String @unique
+  username String
   games    Game[]
 }
 

@@ -1,11 +1,11 @@
 import { GameContext } from './Game.context';
-import { useLoaderData } from 'react-router'
+import { useFetcher, useLoaderData } from 'react-router'
 import s from './Game.module.css'
 import gs from "../../main.module.css"
 import type { GameLoaderProps } from './Game.loader';
 import type { CoordinateInput } from '../../schemas/level.schema';
-import type { Solution } from '../../schemas/game.schema';
-import { useRef, useState } from 'react';
+import type { Game, Solution } from '../../schemas/game.schema';
+import { useEffect, useRef, useState } from 'react';
 import { Thumbnails } from './components/Thumbnails';
 import { GameHeader } from './components/GameHeader';
 import { PreGameMenu } from './components/PreGameMenu';
@@ -19,7 +19,9 @@ type GameState = "pre-game" | "playing" | "post-game";
 
 
 export function Game() {
+  const fetcher = useFetcher();
   const { level } = useLoaderData<GameLoaderProps>();
+  const [game, setGame] = useState<Game | null>(null);
   const [gameState, setGameState] = useState<GameState>("pre-game");
   const [picking, setPicking] = useState<boolean>(false);
   const [targetCoord, setTargetCoord] = useState<CoordinateInput | null>(null);
@@ -44,15 +46,55 @@ export function Game() {
       <PostGameMenu
         title={level.title}
         time={formatTime(timer.time)}
-        nextLevel={String(level.index + 1)}>
-      </PostGameMenu>
+        handleRegister={registerGame}
+      >
+      </PostGameMenu >
     ),
   };
 
+  useEffect(() => {
+    if (!fetcher.data) return;
+    if (fetcher.data.action === "start") {
+      setGame(fetcher.data.game);
+      timer.start();
+    }
+  }, [fetcher.data]);
 
   function start() {
     setGameState("playing");
-    timer.start();
+    fetcher.submit({
+      intent: "start",
+    }, {
+      method: "POST",
+      action: ""
+    });
+  }
+  function stop(game: Game) {
+    timer.stop();
+    setGameState("post-game");
+
+    fetcher.submit({
+      intent: "end",
+      gameId: game.id,
+    },
+      {
+        method: "POST",
+        action: ""
+      });
+  }
+  function registerGame(username: string, game: Game | null) {
+    if (!game) {
+      console.log("There is no game");
+      return;
+    }
+    fetcher.submit({
+      intent: "registerUser",
+      gameId: game.id,
+      username: username
+    }, {
+      method: "POST",
+      action: ""
+    })
   }
   function handleImgClick(e: React.MouseEvent<HTMLImageElement>) {
     if (picking) return;
@@ -81,12 +123,11 @@ export function Game() {
     setTargetCoord(null);
 
     if (updatedSolutions.every(s => s.solved)) {
-      timer.stop();
-      setGameState("post-game");
+      stop(game!);
     }
   }
   return (
-    <GameContext.Provider value={{ handlePickerClick }}>
+    <GameContext.Provider value={{ handlePickerClick, game }}>
       <div className={gs.vignette}></div>
 
       <div

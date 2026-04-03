@@ -2,14 +2,15 @@ import type { PropsWithChildren } from "react"
 import gs from "../../../main.module.css"
 import s from "../Game.module.css"
 import { UsernameForm } from "./UsernameForm"
+import type { Game } from "../../../schemas/game.schema"
 
 type Props = {
   title: string,
   time: string,
-  nextLevel: string
+  handleRegister: (username: string, game: Game | null) => void
 }
 
-export function PostGameMenu({ title, time, children }: PropsWithChildren<Props>) {
+export function PostGameMenu({ title, time, handleRegister, children }: PropsWithChildren<Props>) {
   return (
     <div
       className={`${s.postGameMenu} ${gs.glass}`}
@@ -25,7 +26,9 @@ export function PostGameMenu({ title, time, children }: PropsWithChildren<Props>
         <h2>Completed in:</h2>
         <p>{time}s</p>
       </div>
-      <UsernameForm >
+      <UsernameForm
+        handleSubmit={handleRegister}
+      >
         <div
           className={s.formDescription}
         >

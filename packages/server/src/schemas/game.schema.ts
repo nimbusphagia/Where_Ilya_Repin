@@ -6,7 +6,7 @@ export const CreateGameSchema = z.object({
 });
 export const EditGameSchema = z.object({
   id: z.uuid(),
-  playerId: z.uuid(),
+  username: z.string().optional(),
   levelId: z.uuid(),
 });
 export type CreateGameInput = z.infer<typeof CreateGameSchema>;

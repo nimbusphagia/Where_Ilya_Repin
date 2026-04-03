@@ -137,7 +137,9 @@
 }
 
 .solved {
-  border: 2px solid red;
+  filter: blur(1px);
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .sideSolutionsContainer {

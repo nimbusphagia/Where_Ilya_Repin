@@ -8,7 +8,6 @@ type Props = {
   solution: Solution,
   percent: number,
   handleClick?: (solution: Solution) => void,
-  className?: string,
 }
 
 export function SubjectThumbnail({
@@ -16,7 +15,6 @@ export function SubjectThumbnail({
   solution,
   percent = 10,
   handleClick,
-  className
 }: Props) {
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   useEffect(() => {
@@ -24,11 +22,13 @@ export function SubjectThumbnail({
   }, [src, solution.x, solution.y]);
 
   return (
-    <img
-      src={dataUrl ? dataUrl : undefined}
-      className={`${s.thumbImg} ${className}`}
-      alt=""
-      onClick={handleClick ? () => handleClick(solution) : undefined}
-    />
+    <>
+      <img
+        src={dataUrl ? dataUrl : undefined}
+        className={`${s.thumbImg} ${solution.solved ? s.solved : ""}`}
+        alt=""
+        onClick={handleClick ? () => handleClick(solution) : undefined}
+      />
+    </>
   )
 }

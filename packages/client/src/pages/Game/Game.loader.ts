@@ -7,7 +7,7 @@ export type GameLoaderProps = {
 }
 
 export async function GameLoader({ params }: LoaderFunctionArgs): Promise<GameLoaderProps> {
-  const id = params.id;
-  const level = await apiClient<LevelInput>(`/levels/${id}`);
+  const levelId = params.id;
+  const level = await apiClient<LevelInput>(`/levels/${levelId}`);
   return { level };
 };

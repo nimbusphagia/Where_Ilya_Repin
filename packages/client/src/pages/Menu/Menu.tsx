@@ -14,9 +14,14 @@ export function Menu() {
     <main
       className={s.body}
     >
-      <h1
-        className={`${gs.logo} ${s.title}`}
-      >Where is Ilya Repin</h1>
+      <header
+        className={`${s.header}`}
+      >
+        <h1
+          className={`${s.title} ${gs.logo}`}
+        >Where is Ilya Repin?</h1>
+
+      </header>
       <div
         className={s.levels}
       >

@@ -39,9 +39,16 @@ export const EndGameSchema = z.object({
 export const SolutionSchema = CoordinateSchema.extend({
   solved: z.boolean()
 });
-
+export const RankedGameSchema = z.object({
+  id: z.guid(),
+  timeMs: z.number(),
+  player: z.object({
+    username: z.string(),
+  })
+});
 export type Solution = z.infer<typeof SolutionSchema>;
 export type CreateGameInput = z.infer<typeof CreateGameSchema>;
 export type StopGameInput = z.infer<typeof EndGameSchema>;
 export type GameUserInput = z.infer<typeof RegisterUserSchema>;
+export type RankedGame = z.infer<typeof RankedGameSchema>;
 export type Game = z.infer<typeof GameSchema>;

@@ -4,33 +4,36 @@ import s from './Game.module.css'
 import gs from "../../main.module.css"
 import type { GameLoaderProps } from './Game.loader';
 import type { CoordinateInput } from '../../schemas/level.schema';
-import type { Game, Solution } from '../../schemas/game.schema';
+import type { RankedGame, Game, Solution } from '../../schemas/game.schema';
 import { useEffect, useRef, useState } from 'react';
 import { Thumbnails } from './components/Thumbnails';
 import { GameHeader } from './components/GameHeader';
 import { PreGameMenu } from './components/PreGameMenu';
-import { PostGameMenu } from './components/PostGameMenu';
+import { SavingMenu } from './components/SavingMenu';
 import { useGameTimer } from './hooks/useGameTimer';
 import { ThumbPicker } from './components/ThumbPicker';
 import { isMatch } from '../../utils/game';
 import { formatTime } from '../../utils/formatting';
+import { PostGameMenu } from './components/PostGameMenu';
 
-type GameState = "pre-game" | "playing" | "post-game";
+type GameState = "pre-game" | "playing" | "saving" | "post-game";
 
 
 export function Game() {
   const fetcher = useFetcher();
   const { level } = useLoaderData<GameLoaderProps>();
   const [game, setGame] = useState<Game | null>(null);
+  const [leaderboard, setLeaderboard] = useState<RankedGame[]>([]);
   const [gameState, setGameState] = useState<GameState>("pre-game");
+  const isPlaying = gameState === "playing";
   const [picking, setPicking] = useState<boolean>(false);
   const [targetCoord, setTargetCoord] = useState<CoordinateInput | null>(null);
   const [solutions, setSolutions] = useState<Solution[]>(
     () => level.solutions.map((coord) => ({ ...coord, solved: false }))
   );
-  const isPlaying = gameState === "playing";
   const timer = useGameTimer();
   const wrapperRef = useRef<HTMLDivElement>(null);
+
   const overlay: Record<Exclude<GameState, "playing">, React.ReactNode> = {
     "pre-game": (
       <PreGameMenu
@@ -42,14 +45,20 @@ export function Game() {
         />
       </PreGameMenu>
     ),
-    "post-game": (
-      <PostGameMenu
+    "saving": (
+      <SavingMenu
         title={level.title}
         time={formatTime(timer.time)}
         handleRegister={registerGame}
-      >
-      </PostGameMenu >
+      />
     ),
+    "post-game": (
+      <PostGameMenu
+        leaderboard={leaderboard!}
+        levelTitle={level.title}
+        handleNext={() => null}
+      />
+    )
   };
 
   useEffect(() => {
@@ -57,6 +66,8 @@ export function Game() {
     if (fetcher.data.action === "start") {
       setGame(fetcher.data.game);
       timer.start();
+    } else if (fetcher.data.action === "registerUser") {
+      setLeaderboard(fetcher.data.leaderboard);
     }
   }, [fetcher.data]);
 
@@ -71,7 +82,7 @@ export function Game() {
   }
   function stop(game: Game) {
     timer.stop();
-    setGameState("post-game");
+    setGameState("saving");
 
     fetcher.submit({
       intent: "end",
@@ -87,6 +98,7 @@ export function Game() {
       console.log("There is no game");
       return;
     }
+    setGameState("post-game");
     fetcher.submit({
       intent: "registerUser",
       gameId: game.id,

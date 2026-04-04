@@ -1,42 +1,47 @@
-import type { PropsWithChildren } from "react"
-import gs from "../../../main.module.css"
 import s from "../Game.module.css"
-import { UsernameForm } from "./UsernameForm"
-import type { Game } from "../../../schemas/game.schema"
+import type { RankedGame } from "../../../schemas/game.schema"
+import { Leaderboard } from "../../Leaderboard/Leaderboard"
+import { useNavigate } from "react-router"
 
 type Props = {
-  title: string,
-  time: string,
-  handleRegister: (username: string, game: Game | null) => void
+  levelTitle: string,
+  leaderboard: RankedGame[],
+  handleNext: () => void,
 }
 
-export function PostGameMenu({ title, time, handleRegister, children }: PropsWithChildren<Props>) {
+export function PostGameMenu({ levelTitle, leaderboard, handleNext }: Props) {
+  const navigate = useNavigate();
   return (
     <div
-      className={`${s.postGameMenu} ${gs.glass}`}
+      className={`${s.postGameMenu}`}
     >
       <div
-        className={s.postGameHeader}
+        className={s.floating}
       >
-        <h1>{title}</h1>
+        <Leaderboard
+          levelTitle={levelTitle}
+          leaderboard={leaderboard}
+        />
+
       </div>
       <div
-        className={s.timeDescription}
+        className={s.floating}
       >
-        <h2>Completed in:</h2>
-        <p>{time}s</p>
-      </div>
-      <UsernameForm
-        handleSubmit={handleRegister}
-      >
-        <div
-          className={s.formDescription}
+        <button
+          className={s.retryBtn}
+          type='button'
+          onClick={() => navigate(0)}
         >
-          <p>Leave your name to see how you score</p>
-        </div>
-      </UsernameForm>
-      {children}
+          Retry
+        </button>
+        <button
+          className={s.nextBtn}
+          type='button'
+          onClick={() => handleNext()}
+        >
+          Next Level
+        </button>
+      </div>
     </div>
-
   )
 }

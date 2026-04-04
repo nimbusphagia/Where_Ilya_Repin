@@ -1,11 +1,12 @@
 import type { ActionFunctionArgs } from "react-router";
 import apiClient from "../../utils/apiClient";
-import { StartGameSchema, EndGameSchema, RegisterUserSchema, type Game } from "../../schemas/game.schema";
+import { StartGameSchema, EndGameSchema, RegisterUserSchema, type Game, type RankedGame } from "../../schemas/game.schema";
 
 type GameIntent = "start" | "end" | "registerUser";
 type ActionReturn = {
   action: GameIntent,
   game: Game,
+  leaderboard?: RankedGame[],
 }
 
 export async function GameAction({ request, params }: ActionFunctionArgs): Promise<ActionReturn | Response> {
@@ -41,7 +42,10 @@ export async function GameAction({ request, params }: ActionFunctionArgs): Promi
         method: "PATCH",
         body: JSON.stringify({ levelId, username }),
       });
-      return { action: "registerUser", game: registeredGame };
+      const { games: leaderboard } = await apiClient<{ games: RankedGame[] }>(`/levels/${levelId}/leaderboard`, {
+        method: "GET",
+      });
+      return { action: "registerUser", game: registeredGame, leaderboard };
     }
 
     default:

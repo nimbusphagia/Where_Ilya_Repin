@@ -22,12 +22,14 @@ export async function getLevelById(id: string): Promise<Level | null> {
 export async function listTop10ByLevelId(id: string) {
   return prisma.level.findUnique({
     where: { id },
-    include: {
+    select: {
       games: {
         where: {
-          timeMs: { not: null }
+          timeMs: { not: null },
+          player: { isNot: null },
         },
         select: {
+          id: true,
           timeMs: true,
           player: {
             select: {

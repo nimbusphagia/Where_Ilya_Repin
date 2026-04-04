@@ -2,6 +2,7 @@ import s from "../Game.module.css"
 import type { RankedGame } from "../../../schemas/game.schema"
 import { Leaderboard } from "../../Leaderboard/Leaderboard"
 import { useNavigate } from "react-router"
+import { useGameContext } from "../Game.context"
 
 type Props = {
   levelTitle: string,
@@ -11,6 +12,7 @@ type Props = {
 
 export function PostGameMenu({ levelTitle, leaderboard, handleNext }: Props) {
   const navigate = useNavigate();
+  const { game } = useGameContext()
   return (
     <div
       className={`${s.postGameMenu}`}
@@ -21,6 +23,7 @@ export function PostGameMenu({ levelTitle, leaderboard, handleNext }: Props) {
         <Leaderboard
           levelTitle={levelTitle}
           leaderboard={leaderboard}
+          game={game!}
         />
 
       </div>

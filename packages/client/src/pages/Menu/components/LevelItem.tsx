@@ -8,7 +8,9 @@ type LevelItemProps = ThumbnailLevel & {
 }
 export function LevelItem({ title, imageUrl, handleClick, isSelected }: LevelItemProps) {
   return (
-    <>
+    <div
+      className={s.levelItemWrap}
+    >
       <button
         type="button"
         className={`${s.lvl} ${isSelected ? s.selectedLvl : ""}`}
@@ -28,6 +30,6 @@ export function LevelItem({ title, imageUrl, handleClick, isSelected }: LevelIte
         </p>
       </button>
 
-    </>
+    </div>
   )
 }

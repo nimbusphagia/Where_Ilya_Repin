@@ -1,15 +1,14 @@
-import type { RankedGame } from "../../schemas/game.schema"
+import type { Game, RankedGame } from "../../schemas/game.schema"
 import { formatTime } from "../../utils/formatting";
 import s from "./Leaderboard.module.css";
-import { useGameContext } from "../Game/Game.context";
 import { useEffect, useRef } from "react";
 
 type LeaderboardProps = {
   leaderboard: RankedGame[],
   levelTitle: string,
+  game?: Game
 }
-export function Leaderboard({ leaderboard, levelTitle }: LeaderboardProps) {
-  const { game } = useGameContext()
+export function Leaderboard({ leaderboard, levelTitle, game }: LeaderboardProps) {
   const currentRef = useRef<HTMLLIElement>(null);
   useEffect(() => {
     setTimeout(() => {

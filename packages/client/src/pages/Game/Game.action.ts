@@ -53,11 +53,11 @@ export async function GameAction({ request, params }: ActionFunctionArgs): Promi
     case "nextGame": {
       const currentIndex = formData.get("levelIndex");
       const nextLevel = await apiClient<LevelId>(`/levels/id/${currentIndex}`);
-      const { id } = nextLevel;
-      if (id !== undefined) {
-        return { action: "nextGame", nextLevelId: id };
-      } else {
+      if (!nextLevel) {
         return { action: "home" }
+      } else {
+        const { id } = nextLevel;
+        return { action: "nextGame", nextLevelId: id };
       }
     }
     default:

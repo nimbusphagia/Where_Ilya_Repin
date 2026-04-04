@@ -53,12 +53,14 @@ export function Game() {
         handleRegister={registerGame}
       />
     ),
-    "post-game": (
+    "post-game": leaderboard.length > 0 ? (
       <PostGameMenu
-        leaderboard={leaderboard!}
+        leaderboard={leaderboard}
         levelTitle={level.title}
         handleNext={() => handleNext()}
       />
+    ) : (
+      <></>
     )
   };
 

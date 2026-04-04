@@ -1,5 +1,5 @@
 import { GameContext } from './Game.context';
-import { useFetcher, useLoaderData } from 'react-router'
+import { useFetcher, useLoaderData, useNavigate } from 'react-router'
 import s from './Game.module.css'
 import gs from "../../main.module.css"
 import type { GameLoaderProps } from './Game.loader';
@@ -21,6 +21,7 @@ type GameState = "pre-game" | "playing" | "saving" | "post-game";
 
 export function Game() {
   const fetcher = useFetcher();
+  const navigate = useNavigate();
   const { level } = useLoaderData<GameLoaderProps>();
   const [game, setGame] = useState<Game | null>(null);
   const [leaderboard, setLeaderboard] = useState<RankedGame[]>([]);
@@ -56,7 +57,7 @@ export function Game() {
       <PostGameMenu
         leaderboard={leaderboard!}
         levelTitle={level.title}
-        handleNext={() => null}
+        handleNext={() => handleNext()}
       />
     )
   };
@@ -68,6 +69,11 @@ export function Game() {
       timer.start();
     } else if (fetcher.data.action === "registerUser") {
       setLeaderboard(fetcher.data.leaderboard);
+    } else if (fetcher.data.action === "nextGame") {
+      console.log(fetcher.data.nextLevelId);
+      navigate(`/game/${fetcher.data.nextLevelId}`);
+    } else if (fetcher.data.action === "home") {
+      navigate("/");
     }
   }, [fetcher.data]);
 
@@ -95,7 +101,6 @@ export function Game() {
   }
   function registerGame(username: string, game: Game | null) {
     if (!game) {
-      console.log("There is no game");
       return;
     }
     setGameState("post-game");
@@ -107,6 +112,16 @@ export function Game() {
       method: "POST",
       action: ""
     })
+  }
+  function handleNext() {
+    fetcher.submit({
+      intent: "nextGame",
+      levelIndex: level.index,
+    }, {
+      method: "POST",
+      action: ""
+    })
+
   }
   function handleImgClick(e: React.MouseEvent<HTMLImageElement>) {
     if (picking) return;

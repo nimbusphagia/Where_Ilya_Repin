@@ -38,7 +38,7 @@ export async function addUserToGame({ id, username, levelId }: EditGameInput): P
   if (game.playerId) {
     throw new ConflictError("Game already has a registered player");
   }
-  if (username == undefined) {
+  if (username === undefined) {
     throw new ConflictError("Invalid username");
   }
   const player = await prisma.player.create({

@@ -10,6 +10,7 @@ type FormProps = {
 export function UsernameForm({ handleSubmit, children }: PropsWithChildren<FormProps>) {
   const { game } = useGameContext();
   const [name, setName] = useState<string>("");
+  const isNameValid = name.trim().length < 3;
   return (
     <Form
       className={gs.form}
@@ -25,6 +26,7 @@ export function UsernameForm({ handleSubmit, children }: PropsWithChildren<FormP
           id="username"
           name="username"
           type="text"
+          minLength={3}
           maxLength={20}
           required={true}
           value={name}
@@ -37,6 +39,7 @@ export function UsernameForm({ handleSubmit, children }: PropsWithChildren<FormP
         <button
           type="button"
           onClick={() => handleSubmit(name, game)}
+          disabled={isNameValid}
           className={gs.btn}
         >Submit</button>
       </div>

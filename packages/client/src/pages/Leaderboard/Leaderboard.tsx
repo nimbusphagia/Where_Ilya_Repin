@@ -16,7 +16,7 @@ export function Leaderboard({ leaderboard, levelTitle }: LeaderboardProps) {
         <ol className={s.gameList}>
           {leaderboard.map((game, i) =>
             <li
-              className={s.score}
+              className={s.scoreItem}
               key={game.id}
             >
               <p>{i}</p>

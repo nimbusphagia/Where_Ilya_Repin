@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router"
+import { createBrowserRouter, useParams } from "react-router"
 import { RootLayout } from "../layouts/RootLayout";
 import { Menu } from "../pages/Menu/Menu";
 import { MenuLoader } from "../pages/Menu/Menu.loader";
@@ -21,9 +21,12 @@ export const router = createBrowserRouter(
         },
         {
           path: 'game/:id',
-          Component: Game,
           loader: GameLoader,
           action: GameAction,
+          Component: () => {
+            const { id } = useParams();
+            return <Game key={id} />;
+          }
         }
       ],
     }

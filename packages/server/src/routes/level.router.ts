@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { create, getLeaderboard, getLevel, getLevels, update } from "../controllers/level.controller"
+import { getLeaderboard, getLevel, getLevels, getNextLevel } from "../controllers/level.controller"
 
 const router = Router();
 
 router.get("/", getLevels);
 router.get("/:id", getLevel);
+router.get("/id/:index", getNextLevel);
 router.get("/:id/leaderboard", getLeaderboard);
 
 export default router;

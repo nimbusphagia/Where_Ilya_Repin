@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { listAllLevels, getLevelById, listTop10ByLevelId, createLevel, editLevel, editLevelIndex, editLevelImage, editLevelSolutions } from "../services/level.service";
+import { listAllLevels, getLevelById, listTop50ByLevelId, createLevel, editLevel, editLevelIndex, editLevelImage, editLevelSolutions, getNextLevelByIndex } from "../services/level.service";
 import { CreateLevelSchema, EditLevelImageSchema, EditLevelIndexSchema, EditLevelSchema, EditLevelSolutionsSchema } from "../schemas/level.schema";
 import { IdParamsSchema } from "../schemas/controller.schema";
 
@@ -23,10 +23,20 @@ export async function getLevel(req: Request, res: Response, next: NextFunction) 
     next!(error)
   };
 }
+export async function getNextLevel(req: Request, res: Response, next: NextFunction) {
+  try {
+    const index = req.params.index;
+    const levelId = await getNextLevelByIndex(Number(index));
+    return res.status(200).json(levelId);
+  } catch (error) {
+    console.error(error);
+    next!(error)
+  };
+}
 export async function getLeaderboard(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = IdParamsSchema.parse(req.params);
-    const leaderboard = await listTop10ByLevelId(id);
+    const leaderboard = await listTop50ByLevelId(id);
     return res.status(200).json(leaderboard);
   } catch (error) {
     console.error(error);

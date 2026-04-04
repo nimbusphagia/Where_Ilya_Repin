@@ -25,7 +25,7 @@ export function PostGameMenu({ levelTitle, leaderboard, handleNext }: Props) {
 
       </div>
       <div
-        className={s.floating}
+        className={s.btnContainer}
       >
         <button
           className={s.retryBtn}
@@ -37,7 +37,7 @@ export function PostGameMenu({ levelTitle, leaderboard, handleNext }: Props) {
         <button
           className={s.nextBtn}
           type='button'
-          onClick={() => handleNext()}
+          onClick={handleNext}
         >
           Next Level
         </button>

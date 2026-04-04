@@ -1,6 +1,7 @@
 import type { Level } from "../../prisma/generated/client";
 import { prisma } from "../../lib/prisma";
 import { CreateLevelInput, EditImageInput, EditIndexInput, EditLevelInput, EditSolutionsInput } from "../schemas/level.schema";
+import { NotFoundError } from "../errors";
 
 export async function listAllLevels(): Promise<Level[]> {
   return prisma.level.findMany({
@@ -19,14 +20,19 @@ export async function getLevelById(id: string): Promise<Level | null> {
     }
   })
 }
-export async function listTop10ByLevelId(id: string) {
+export async function listTop50ByLevelId(id: string) {
   return prisma.level.findUnique({
     where: { id },
     select: {
       games: {
         where: {
           timeMs: { not: null },
-          player: { isNot: null },
+          player: {
+            isNot: null,
+            is: {
+              username: { not: "" }
+            }
+          }
         },
         select: {
           id: true,
@@ -40,7 +46,7 @@ export async function listTop10ByLevelId(id: string) {
         orderBy: {
           timeMs: "asc",
         },
-        take: 10,
+        take: 50,
       }
     }
   })
@@ -132,4 +138,19 @@ export async function editLevelSolutions({ id, solutions }: EditSolutionsInput) 
       solutions: true,
     },
   });
+}
+export async function getNextLevelByIndex(index: number) {
+  const nextIndex = index + 1;
+  const nextLevel = prisma.level.findUnique({
+    where: {
+      index: nextIndex,
+    },
+    select: {
+      id: true,
+    }
+  });
+  if (!nextLevel) {
+    throw new NotFoundError("There's no next level");
+  }
+  return nextLevel;
 }

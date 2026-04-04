@@ -1,4 +1,7 @@
 import { z } from "zod";
+export const LevelIdSchema = z.object({
+  id: z.guid(),
+});
 export const CoordinateSchema = z.object({
   id: z.guid(),
   x: z.number(),
@@ -35,3 +38,4 @@ export type Coordinate = z.infer<typeof CoordinateSchema>;
 export type CreateLevelInput = z.infer<typeof CreateLevelSchema>;
 export type LevelInput = z.infer<typeof EditLevelSchema>;
 export type ThumbnailLevel = z.infer<typeof ThumbnailLevelSchema>;
+export type LevelId = z.infer<typeof LevelIdSchema>;

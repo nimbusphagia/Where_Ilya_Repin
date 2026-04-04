@@ -1,12 +1,14 @@
-import type { ActionFunctionArgs } from "react-router";
+import { type ActionFunctionArgs } from "react-router";
 import apiClient from "../../utils/apiClient";
 import { StartGameSchema, EndGameSchema, RegisterUserSchema, type Game, type RankedGame } from "../../schemas/game.schema";
+import type { LevelId } from "../../schemas/level.schema";
 
-type GameIntent = "start" | "end" | "registerUser";
+type GameIntent = "start" | "end" | "registerUser" | "nextGame" | "home";
 type ActionReturn = {
   action: GameIntent,
-  game: Game,
+  game?: Game,
   leaderboard?: RankedGame[],
+  nextLevelId?: String
 }
 
 export async function GameAction({ request, params }: ActionFunctionArgs): Promise<ActionReturn | Response> {
@@ -48,6 +50,16 @@ export async function GameAction({ request, params }: ActionFunctionArgs): Promi
       return { action: "registerUser", game: registeredGame, leaderboard };
     }
 
+    case "nextGame": {
+      const currentIndex = formData.get("levelIndex");
+      const nextLevel = await apiClient<LevelId>(`/levels/id/${currentIndex}`);
+      const { id } = nextLevel;
+      if (id !== undefined) {
+        return { action: "nextGame", nextLevelId: id };
+      } else {
+        return { action: "home" }
+      }
+    }
     default:
       throw new Response("Invalid intent", { status: 400 });
   }

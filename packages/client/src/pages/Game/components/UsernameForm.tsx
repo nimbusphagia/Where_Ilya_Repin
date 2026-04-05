@@ -40,7 +40,7 @@ export function UsernameForm({ handleSubmit, children }: PropsWithChildren<FormP
           type="button"
           onClick={() => handleSubmit(name, game)}
           disabled={!isNameValid}
-          className={gs.btn}
+          className={`${gs.btn} ${!isNameValid ? s.disabled : undefined}`}
         >Submit</button>
       </div>
     </Form>

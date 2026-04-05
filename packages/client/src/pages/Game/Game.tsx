@@ -49,7 +49,7 @@ export function Game() {
     "saving": (
       <SavingMenu
         title={level.title}
-        time={formatTime(timer.time)}
+        time={game ? formatTime(Math.floor(game.timeMs * 0.1)) : ""}
         handleRegister={registerGame}
       />
     ),
@@ -71,8 +71,10 @@ export function Game() {
       timer.start();
     } else if (fetcher.data.action === "registerUser") {
       setLeaderboard(fetcher.data.leaderboard);
+    } else if (fetcher.data.action === "end") {
+      setGame(fetcher.data.game);
+      setGameState("saving");
     } else if (fetcher.data.action === "nextGame") {
-      console.log(fetcher.data.nextLevelId);
       navigate(`/game/${fetcher.data.nextLevelId}`);
     } else if (fetcher.data.action === "home") {
       navigate("/");
@@ -90,7 +92,6 @@ export function Game() {
   }
   function stop(game: Game) {
     timer.stop();
-    setGameState("saving");
 
     fetcher.submit({
       intent: "end",
@@ -131,7 +132,6 @@ export function Game() {
     const wrapperRect = wrapperRef.current!.getBoundingClientRect();
     const x = ((e.clientX - wrapperRect.left) / wrapperRect.width) * 100;
     const y = ((e.clientY - wrapperRect.top) / wrapperRect.height) * 100;
-    console.log("Clicked: ", { x, y });
     setTargetCoord({ x, y });
     setPicking(true);
   }

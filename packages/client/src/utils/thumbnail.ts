@@ -1,8 +1,8 @@
-import type { Coordinate } from "../types/entities";
+import type { CoordinateInput } from "../schemas/level.schema";
 
 export async function extractThumbnail(
   src: string,
-  coord: Coordinate,
+  coord: CoordinateInput,
   percent = 20
 ): Promise<string> {
   const img = await loadImage(src);

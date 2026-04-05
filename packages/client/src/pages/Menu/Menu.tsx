@@ -1,7 +1,6 @@
 import s from './Menu.module.css'
 import gs from "../../main.module.css"
 import { NavLink, useFetcher, useLoaderData } from 'react-router'
-import type { Menu } from './types/ui';
 import { LevelItem } from './components/LevelItem';
 import { useEffect, useState } from 'react';
 import type { LevelInput } from '../../schemas/level.schema';

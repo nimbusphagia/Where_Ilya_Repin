@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { listAllLevels, getLevelById, listTop50ByLevelId, createLevel, editLevel, editLevelIndex, editLevelImage, editLevelSolutions, getNextLevelByIndex } from "../services/level.service";
-import { CreateLevelSchema, EditLevelImageSchema, EditLevelIndexSchema, EditLevelSchema, EditLevelSolutionsSchema } from "../schemas/level.schema";
-import { IdParamsSchema } from "../schemas/controller.schema";
+import { listAllLevels, getLevelById, listTop50ByLevelId, createLevel, editLevel, editLevelIndex, editLevelImage, editLevelSolutions, getNextLevelByIndex } from "../services/level.service.js";
+import { CreateLevelSchema, EditLevelImageSchema, EditLevelIndexSchema, EditLevelSchema, EditLevelSolutionsSchema } from "../schemas/level.schema.js";
+import { IdParamsSchema } from "../schemas/controller.schema.js";
 
 export async function getLevels(req: Request, res: Response, next: NextFunction) {
 

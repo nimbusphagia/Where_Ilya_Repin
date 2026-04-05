@@ -1,7 +1,7 @@
-import { prisma } from "../../lib/prisma";
-import { Game } from "../../prisma/generated/client";
-import { CreateGameInput, EditGameInput } from "../schemas/game.schema";
-import { ConflictError } from "../errors";
+import { prisma } from "../../lib/prisma.js";
+import type { Game } from "../generated/client/index.js";
+import { CreateGameInput, EditGameInput } from "../schemas/game.schema.js";
+import { ConflictError } from "../errors/index.js";
 
 export async function listAllGames(): Promise<Game[]> {
   return prisma.game.findMany({

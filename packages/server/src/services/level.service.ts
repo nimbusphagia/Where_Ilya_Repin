@@ -1,7 +1,7 @@
-import type { Level } from "../../prisma/generated/client";
-import { prisma } from "../../lib/prisma";
-import { CreateLevelInput, EditImageInput, EditIndexInput, EditLevelInput, EditSolutionsInput } from "../schemas/level.schema";
-import { NotFoundError } from "../errors";
+import type { Level } from "../generated/client/index.js";
+import { prisma } from "../../lib/prisma.js";
+import { CreateLevelInput, EditImageInput, EditIndexInput, EditLevelInput, EditSolutionsInput } from "../schemas/level.schema.js";
+import { NotFoundError } from "../errors/index.js";
 
 export async function listAllLevels(): Promise<Level[]> {
   return prisma.level.findMany({

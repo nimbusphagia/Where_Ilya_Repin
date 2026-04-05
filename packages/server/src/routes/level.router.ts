@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getLeaderboard, getLevel, getLevels, getNextLevel } from "../controllers/level.controller"
+import { getLeaderboard, getLevel, getLevels, getNextLevel } from "../controllers/level.controller.js"
 
 const router = Router();
 

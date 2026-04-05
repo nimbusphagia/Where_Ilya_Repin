@@ -1,8 +1,8 @@
 import { Router } from "express";
-import levelRouter from "./level.router";
-import gameRouter from "./game.router"
-import playerRouter from "./player.router"
-import adminRouter from "./admin.router"
+import levelRouter from "./level.router.js";
+import gameRouter from "./game.router.js"
+import playerRouter from "./player.router.js"
+import adminRouter from "./admin.router.js"
 
 const indexRouter = Router();
 

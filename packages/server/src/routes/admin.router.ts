@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { create, update, updateImage, updateIndex, updateSolutions } from "../controllers/level.controller";
-import { AppError } from "../errors";
+import { create, update, updateImage, updateIndex, updateSolutions } from "../controllers/level.controller.js";
+import { AppError } from "../errors/index.js";
 
 export function requireAdminSecret(req: Request, res: Response, next: NextFunction) {
   try {

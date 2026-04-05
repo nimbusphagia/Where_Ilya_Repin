@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { createPlayerSchema } from "../schemas/player.schema";
-import { createPlayer } from "../services/player.service";
+import { createPlayerSchema } from "../schemas/player.schema.js";
+import { createPlayer } from "../services/player.service.js";
 
 export async function create(req: Request, res: Response, next: NextFunction) {
   try {

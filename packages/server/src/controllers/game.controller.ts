@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateGameSchema, EditGameSchema } from "../schemas/game.schema";
-import { createGame, addUserToGame, stopGame, listAllGames } from "../services/game.service";
+import { CreateGameSchema, EditGameSchema } from "../schemas/game.schema.js";
+import { createGame, addUserToGame, stopGame, listAllGames } from "../services/game.service.js";
 export async function getGames(req: Request, res: Response, next: NextFunction) {
   try {
     const games = await listAllGames();

@@ -3,7 +3,13 @@
     {
       "src": "src/index.ts",
       "use": "@vercel/node",
-      "config": { "includeFiles": ["src/**", "config/**", "prisma/**"] }
+      "config": {
+        "includeFiles": [
+          "src/**/*",
+          "config/**/*",
+          "prisma/generated/**/*"
+        ]
+      }
     }
   ],
   "rewrites": [

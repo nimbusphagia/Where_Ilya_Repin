@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import app from '../config/express';
+import app from '../config/express.js';
 
 if (process.env.NODE_ENV === "development") {
   app.listen(process.env.PORT, () => {

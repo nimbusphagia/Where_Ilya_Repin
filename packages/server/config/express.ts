@@ -2,9 +2,9 @@ import 'dotenv/config';
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { ZodError } from 'zod';
-import { AppError } from '../src/errors';
-import { Prisma } from '../prisma/generated/client';
-import indexRouter from '../src/routes/index.router';
+import { AppError } from '../src/errors/index.js';
+import { Prisma } from '../prisma/generated/client.js';
+import indexRouter from '../src/routes/index.router.js';
 
 const app = express();
 app.use(express.json());

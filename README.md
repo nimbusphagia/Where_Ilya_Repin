@@ -44,7 +44,6 @@ Where_Ilya_Repin/
 └── server/         # Express API + Prisma schema
 ```
 
----
 
 ## Author
 
